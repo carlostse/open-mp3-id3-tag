@@ -1,0 +1,5 @@
+debug/*
+release/*
+Makefile*
+*.pro.user
+*.qm

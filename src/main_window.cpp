@@ -1,0 +1,381 @@
+#include "main_window.h"
+
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
+{
+	tc = NULL;
+	mp3File = NULL;
+
+	// Qt Translator
+	trans = new QTranslator();
+	QApplication::instance()->installTranslator(trans);
+
+	// load default language
+	QLocale *loc = new QLocale();
+	language = loc->language() == QLocale::Chinese? loc->country() == QLocale::China? ZHS: ZHT: ENG;
+	delete loc;
+	std::cout << "language: " << language << std::endl;
+
+	// initial interface
+	initWidget();
+	updateInterface();
+
+	// open file dialog
+	openFile();
+}
+
+MainWindow::~MainWindow()
+{
+	delete trans;
+}
+
+QLabel* MainWindow::getQLabel(int width = 0)
+{
+	QLabel *lbl = new QLabel(this);
+	lbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	lbl->setFixedWidth(width > 0? width: 60);
+	return lbl;
+}
+
+void MainWindow::openFile()
+{
+	QFileDialog *dialog = new QFileDialog(new QLabel("Open"));
+	dialog->setFileMode(QFileDialog::ExistingFile);
+	dialog->setFilter("MP3 files (*.mp3)");
+	dialog->setViewMode(QFileDialog::Detail);
+
+	if (dialog->exec() == QDialog::Accepted) {
+		QStringListIterator iterator(dialog->selectedFiles());
+
+		if (iterator.hasNext()) {
+			QByteArray text = iterator.next().toLocal8Bit();
+			char *data = new char[text.size() + 1];
+			strcpy(data, text.constData());
+			loadMp3(data);
+			delete[] data;
+		}
+	}
+}
+
+void MainWindow::createMenu()
+{
+	// menu file
+	actOpen = new QAction(this);
+	actOpen->setShortcut(QKeySequence("Ctrl+O"));
+
+	actConvert = new QAction(this);
+	actConvert->setShortcut(QKeySequence("Ctrl+E"));
+
+	actExit = new QAction(this);
+	actExit->setShortcut(QKeySequence("Ctrl+X"));
+
+	menuFile = menuBar()->addMenu("");
+	menuFile->addAction(actOpen);
+	menuFile->addAction(actConvert);
+	menuFile->addSeparator();
+	menuFile->addAction(actExit);
+
+	// menu interface
+	actEn = new QAction(this);
+	actZht = new QAction(this);
+	actZhs = new QAction(this);
+	actEn->setCheckable(true);
+	actZht->setCheckable(true);
+	actZhs->setCheckable(true);
+	updateLangCheckbox();
+
+	menuInterface = menuBar()->addMenu("");
+	menuInterface->addAction(actEn);
+	menuInterface->addAction(actZht);
+	menuInterface->addAction(actZhs);
+
+	// menu chinese convert
+	actZhsToZht = new QAction(this);
+	actZhtToZhs = new QAction(this);
+
+	menuChiConv = menuBar()->addMenu("");
+	menuChiConv->addAction(actZhsToZht);
+	menuChiConv->addAction(actZhtToZhs);
+
+	// menu help
+	actHelp = new QAction(this);
+	actHelp->setShortcut(QKeySequence("F1"));
+	actAbout = new QAction(this);
+
+	menuHelp = menuBar()->addMenu("");
+	menuHelp->addAction(actHelp);
+	menuHelp->addAction(actAbout);
+
+	// signal and slot
+	QObject::connect(actOpen, SIGNAL(triggered()), this, SLOT(openFile()));
+	QObject::connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
+	QObject::connect(actHelp, SIGNAL(triggered()), this, SLOT(help()));
+	QObject::connect(actAbout, SIGNAL(triggered()), this, SLOT(about()));
+	QObject::connect(actEn, SIGNAL(triggered()), this, SLOT(changeLangEn()));
+	QObject::connect(actZht, SIGNAL(triggered()), this, SLOT(changeLangZht()));
+	QObject::connect(actZhs, SIGNAL(triggered()), this, SLOT(changeLangZhs()));
+	QObject::connect(actZhsToZht, SIGNAL(triggered()), this, SLOT(convertToZht()));
+	QObject::connect(actZhtToZhs, SIGNAL(triggered()), this, SLOT(convertToZhs()));
+}
+
+void MainWindow::initWidget()
+{
+	// title and size
+	this->setWindowTitle(QString("MP3 ID3 Tag Encoding Converter ") + QString(VERSION));
+	this->setMinimumSize(MIN_SIZE);
+	this->setMaximumSize(MAX_SIZE);
+
+	QWidget *widget = new QWidget;
+	setCentralWidget(widget);
+
+	// menu
+	createMenu();
+
+	// layout
+	QHBoxLayout *hLayout[NUM_OF_WIN_ROW];
+	int row = 0;
+
+	// row 0
+	btnOpen = new QPushButton(this);
+	btnConvert = new QPushButton(this);
+	hLayout[row] = new QHBoxLayout();
+	hLayout[row]->addWidget(btnOpen);
+	hLayout[row]->addWidget(btnConvert);
+
+	// row 1
+	lbl1 = getQLabel();
+	editTitle = new QLineEdit(this);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl1);
+	hLayout[row]->addWidget(editTitle);
+
+	// row 2
+	lbl2 = getQLabel();
+	editArtist = new QLineEdit(this);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl2);
+	hLayout[row]->addWidget(editArtist);
+
+	// row 3
+	lbl3 = getQLabel();
+	editAlbum = new QLineEdit(this);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl3);
+	hLayout[row]->addWidget(editAlbum);
+
+	// row 4
+	lbl4 = getQLabel();
+	editGenre = new QLineEdit(this);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl4);
+	hLayout[row]->addWidget(editGenre);
+
+	// row 5
+	lbl5 = getQLabel();
+	editComment = new QPlainTextEdit(this);
+	MainWindow::setPlainTextHeight(editComment, NUM_OF_COMMENT_ROW);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl5);
+	hLayout[row]->addWidget(editComment);
+
+	// vertical layout
+	QVBoxLayout *vLayout = new QVBoxLayout();
+	for (int i = 0; i < NUM_OF_WIN_ROW; i++)
+		vLayout->addLayout(hLayout[i]);
+
+	widget->setLayout(vLayout);
+
+	// update interface text
+	updateInterface();
+
+	// signal and slot
+	QObject::connect(btnOpen, SIGNAL(clicked()), this, SLOT(openFile()));
+	QObject::connect(btnConvert, SIGNAL(clicked()), this, SLOT(convertMp3()));
+}
+
+void MainWindow::updateLangCheckbox()
+{
+	actEn->setChecked(false);
+	actZht->setChecked(false);
+	actZhs->setChecked(false);
+
+	if (language == ZHT)
+		actZht->setChecked(true);
+	else if (language == ZHS)
+		actZhs->setChecked(true);
+	else
+		actEn->setChecked(true);
+}
+
+void MainWindow::updateInterface()
+{
+	if (language == ZHT)
+		trans->load("zht.qm");
+	else if (language == ZHS)
+		trans->load("zhs.qm");
+	else
+		trans->load("");
+
+	// menu
+	menuFile->setTitle(tr("&File"));
+	actOpen->setText(tr("&Open"));
+	actConvert->setText(tr("Conv&ert ID3 Tag"));
+	actExit->setText(tr("E&xit"));
+	actEn->setText(tr("&English"));
+	actZht->setText(tr("&Traditional Chinese"));
+	actZhs->setText(tr("&Simplified Chinese"));
+	menuInterface->setTitle(tr("&Interface"));
+	actZhsToZht->setText(tr("&Simplified Chinese to Simplified"));
+	actZhtToZhs->setText(tr("&Traditional Chinese to Simplified"));
+	menuChiConv->setTitle(tr("&Chinese Convert"));
+	actHelp->setText(tr("&Help"));
+	actAbout->setText(tr("&About"));
+	menuHelp->setTitle(tr("&Help"));
+
+	// buttons
+	btnOpen->setText(tr("Open"));
+	btnConvert->setText(tr("Convert ID3 Tag"));
+
+	// labels
+	lbl1->setText(tr("Title: "));
+	lbl2->setText(tr("Artist: "));
+	lbl3->setText(tr("Album: "));
+	lbl4->setText(tr("Genre: "));
+	lbl5->setText(tr("Comment: "));
+
+	// status bar
+	statusBar()->showMessage("");
+}
+
+void MainWindow::loadMp3(const char *mp3FilePath)
+{
+	std::cout << "loadMp3: " << mp3FilePath << endl;
+
+	if (mp3FilePath == NULL)
+		return;
+
+	if (tc != NULL)
+		delete tc;
+
+	if (mp3File != NULL)
+		delete mp3File;
+
+	mp3File = new TagLib::FileRef(mp3FilePath);
+	tc = new TagConvertor(mp3File);
+	tc->load();
+	setText();
+}
+
+void MainWindow::setText()
+{
+	if (tc == NULL)
+		return;
+
+	editTitle->setText(*tc->utf8Title());
+	editArtist->setText(*tc->utf8Artist());
+	editAlbum->setText(*tc->utf8Album());
+	editGenre->setText(*tc->utf8Genre());
+	editComment->setPlainText(*tc->utf8Comment());
+	statusBar()->showMessage(tr("Source Encoding: ").append(tc->encoding()).toUpper());
+}
+
+void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
+{
+	QFontMetrics m(edit->font());
+	edit->setFixedHeight(nRows * (m.lineSpacing() + 1));
+}
+
+void MainWindow::convertMp3()
+{
+	if (tc == NULL)
+		return;
+
+	tc->setUtf8Title(editTitle->text());
+	tc->setUtf8Artist(editArtist->text());
+	tc->setUtf8Album(editAlbum->text());
+	tc->setUtf8Genre(editGenre->text());
+	tc->setUtf8Comment(editComment->toPlainText());
+
+	bool success = tc->convert() && tc->save();
+	std::cout << "save success: " << success << "endl" << endl;
+	QMessageBox msgBox;
+	msgBox.setWindowTitle(tr("Save"));
+	msgBox.setInformativeText(success? tr("Saved"): tr("Save Failed"));
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.exec();
+
+	if (success){
+		tc->load();
+		setText();
+	}
+}
+
+void MainWindow::help()
+{
+	QMessageBox msgBox;
+	msgBox.setWindowTitle(tr("Help"));
+	msgBox.setInformativeText(tr("Working in Process"));
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.exec();
+}
+
+void MainWindow::about()
+{
+	QString t = tr("MP3 ID3 Tag Encoding Converter ");
+	t.append(VERSION);
+	t.append("\n");
+	t.append(tr("By Carlos Tse <copperoxide@gmail.com>"));
+
+	QMessageBox msgBox;
+	msgBox.setWindowTitle(tr("About"));
+	msgBox.setInformativeText(t);
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.exec();
+}
+
+void MainWindow::changeLangEn()
+{
+	language = ENG;
+	updateLangCheckbox();
+	updateInterface();
+}
+
+void MainWindow::changeLangZht()
+{
+	language = ZHT;
+	updateLangCheckbox();
+	updateInterface();
+}
+
+void MainWindow::changeLangZhs()
+{
+	language = ZHS;
+	updateLangCheckbox();
+	updateInterface();
+}
+
+void MainWindow::convertToZht()
+{
+	ChineseConvertor *cc = new ChineseConvertor(CONFIG_ZHS_TO_ZHT);
+	editTitle->setText(cc->convert(editTitle->text()));
+	editArtist->setText(cc->convert(editArtist->text()));
+	editAlbum->setText(cc->convert(editAlbum->text()));
+	editGenre->setText(cc->convert(editGenre->text()));
+	editComment->setPlainText(cc->convert(editComment->toPlainText()));
+	delete cc;
+}
+
+void MainWindow::convertToZhs()
+{
+	ChineseConvertor *cc = new ChineseConvertor(CONFIG_ZHT_TO_ZHS);
+	editTitle->setText(cc->convert(editTitle->text()));
+	editArtist->setText(cc->convert(editArtist->text()));
+	editAlbum->setText(cc->convert(editAlbum->text()));
+	editGenre->setText(cc->convert(editGenre->text()));
+	editComment->setPlainText(cc->convert(editComment->toPlainText()));
+	delete cc;
+}
