@@ -166,43 +166,56 @@ void MainWindow::initWidget()
 
 	// row 1
 	lbl1 = getQLabel();
-	editTitle = new QLineEdit(this);
+
+	cbEnc = new QComboBox(this);
+	cbEnc->addItem("BIG5");
+	cbEnc->addItem("BIG5-HKSCS");
+	cbEnc->addItem("GB18030");
+	cbEnc->addItem("UTF-8");
 
 	hLayout[++row] = new QHBoxLayout();
 	hLayout[row]->addWidget(lbl1);
-	hLayout[row]->addWidget(editTitle);
+	hLayout[row]->addWidget(cbEnc);
 
 	// row 2
 	lbl2 = getQLabel();
-	editArtist = new QLineEdit(this);
+	editTitle = new QLineEdit(this);
 
 	hLayout[++row] = new QHBoxLayout();
 	hLayout[row]->addWidget(lbl2);
-	hLayout[row]->addWidget(editArtist);
+	hLayout[row]->addWidget(editTitle);
 
 	// row 3
 	lbl3 = getQLabel();
-	editAlbum = new QLineEdit(this);
+	editArtist = new QLineEdit(this);
 
 	hLayout[++row] = new QHBoxLayout();
 	hLayout[row]->addWidget(lbl3);
-	hLayout[row]->addWidget(editAlbum);
+	hLayout[row]->addWidget(editArtist);
 
 	// row 4
 	lbl4 = getQLabel();
-	editGenre = new QLineEdit(this);
+	editAlbum = new QLineEdit(this);
 
 	hLayout[++row] = new QHBoxLayout();
 	hLayout[row]->addWidget(lbl4);
-	hLayout[row]->addWidget(editGenre);
+	hLayout[row]->addWidget(editAlbum);
 
 	// row 5
 	lbl5 = getQLabel();
+	editGenre = new QLineEdit(this);
+
+	hLayout[++row] = new QHBoxLayout();
+	hLayout[row]->addWidget(lbl5);
+	hLayout[row]->addWidget(editGenre);
+
+	// row 6
+	lbl6 = getQLabel();
 	editComment = new QPlainTextEdit(this);
 	MainWindow::setPlainTextHeight(editComment, NUM_OF_COMMENT_ROW);
 
 	hLayout[++row] = new QHBoxLayout();
-	hLayout[row]->addWidget(lbl5);
+	hLayout[row]->addWidget(lbl6);
 	hLayout[row]->addWidget(editComment);
 
 	// vertical layout
@@ -218,6 +231,7 @@ void MainWindow::initWidget()
 	// signal and slot
 	QObject::connect(btnOpen, SIGNAL(clicked()), this, SLOT(openFile()));
 	QObject::connect(btnConvert, SIGNAL(clicked()), this, SLOT(convertMp3()));
+	QObject::connect(cbEnc, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(reloadEncoding(const QString &)));
 }
 
 void MainWindow::updateLangCheckbox()
@@ -264,14 +278,15 @@ void MainWindow::updateInterface()
 	btnConvert->setText(tr("Convert ID3 Tag"));
 
 	// labels
-	lbl1->setText(tr("Title: "));
-	lbl2->setText(tr("Artist: "));
-	lbl3->setText(tr("Album: "));
-	lbl4->setText(tr("Genre: "));
-	lbl5->setText(tr("Comment: "));
+	lbl1->setText(tr("Encoding: "));
+	lbl2->setText(tr("Title: "));
+	lbl3->setText(tr("Artist: "));
+	lbl4->setText(tr("Album: "));
+	lbl5->setText(tr("Genre: "));
+	lbl6->setText(tr("Comment: "));
 
 	// status bar
-	statusBar()->showMessage("");
+//	statusBar()->showMessage("");
 }
 
 void MainWindow::loadMp3(wchar_t *mp3FilePath)
@@ -289,8 +304,7 @@ void MainWindow::loadMp3(wchar_t *mp3FilePath)
 
 	mp3File = new TagLib::FileRef(mp3FilePath);
 	tc = new TagConvertor(mp3File);
-	tc->load();
-	setText();
+	readMp3Info();
 }
 
 void MainWindow::setText()
@@ -303,7 +317,32 @@ void MainWindow::setText()
 	editAlbum->setText(*tc->utf8Album());
 	editGenre->setText(*tc->utf8Genre());
 	editComment->setPlainText(*tc->utf8Comment());
-	statusBar()->showMessage(tr("Source Encoding: ").append(tc->encoding()).toUpper());
+//	statusBar()->showMessage(tr("Source Encoding: ").append(tc->encoding()).toUpper());
+}
+
+void MainWindow::readMp3Info(const char *encoding)
+{
+	tc->load(encoding);
+	setText();
+
+	if (encoding == NULL){
+		std::cout << "disable combox signal" << std::endl;
+		disableComboxSignal = true;
+
+		// default UTF-8
+		cbEnc->setCurrentIndex(3);
+
+		// match the encoding
+		QString enc = QString(tc->encoding()).toUpper();
+		for (int i = 0; i < cbEnc->count(); i++){
+			if (cbEnc->itemText(i) == enc){
+				cbEnc->setCurrentIndex(i);
+			}
+		}
+
+		std::cout << "enable combox signal" << std::endl;
+		disableComboxSignal = false;
+	}
 }
 
 void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
@@ -332,10 +371,8 @@ void MainWindow::convertMp3()
 	msgBox.setStandardButtons(QMessageBox::Ok);
 	msgBox.exec();
 
-	if (success){
-		tc->load();
-		setText();
-	}
+	if (success)
+		readMp3Info();
 }
 
 void MainWindow::help()
@@ -404,4 +441,13 @@ void MainWindow::convertToZhs()
 	editGenre->setText(cc->convert(editGenre->text()));
 	editComment->setPlainText(cc->convert(editComment->toPlainText()));
 	delete cc;
+}
+
+void MainWindow::reloadEncoding(const QString &text)
+{
+	if (disableComboxSignal)
+		return;
+
+//	std::cout << "reload encoding: " << text.toStdString() << std::endl;
+	readMp3Info(text.toAscii().data());
 }

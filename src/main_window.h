@@ -34,15 +34,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QTranslator>
 #include <QLocale>
 #include <QStatusBar>
+#include <QComboBox>
 #include "taglib/fileref.h"
 #include "taglib/tag.h"
 #include "common.h"
 #include "tag_convertor.h"
 #include "chinese_convertor.h"
 
-#define NUM_OF_WIN_ROW 6
+#define NUM_OF_WIN_ROW 7
 #define NUM_OF_COMMENT_ROW 5
-#define MIN_SIZE 380, 275
+#define MIN_SIZE 380, 280
 #define MAX_SIZE 580, 420
 
 class MainWindow : public QMainWindow
@@ -50,7 +51,10 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 private:
+	bool disableComboxSignal;
 	TagConvertor *tc;
+
+	QComboBox *cbEnc;
 	QPushButton *btnOpen, *btnConvert;
 	QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
 	QPlainTextEdit *editComment;
@@ -61,7 +65,7 @@ private:
 			*actEn, *actZht, *actZhs,
 			*actZhsToZht, *actZhtToZhs,
 			*actHelp, *actAbout;
-	QLabel *lbl1, *lbl2, *lbl3, *lbl4, *lbl5;
+	QLabel *lbl1, *lbl2, *lbl3, *lbl4, *lbl5, *lbl6;
 
 	QTranslator *trans;
 	enum Language {ENG, ZHT, ZHS};
@@ -75,6 +79,7 @@ private:
 	void initWidget();
 	void loadMp3(wchar_t *mp3FilePath);
 	void setText();
+	void readMp3Info(const char *encoding = NULL);
 	static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
 
 public:
@@ -91,6 +96,7 @@ public slots:
 	void changeLangZhs();
 	void convertToZht();
 	void convertToZhs();
+	void reloadEncoding(const QString &);
 };
 
 #endif // MAIN_WINDOW_H

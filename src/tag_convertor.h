@@ -46,7 +46,7 @@ public:
 
 	static bool isUtf8Tag(const TagLib::String str);
 
-	void load();
+	void load(const char *manualEncoding = NULL);
 	bool convert();
 	bool save() const;
 	const char *encoding() const;

@@ -44,7 +44,7 @@ bool TagConvertor::isUtf8Tag(TagLib::String str)
 	return !str.isNull() && !str.isEmpty() && !str.isAscii() && !str.isLatin1();
 }
 
-void TagConvertor::load()
+void TagConvertor::load(const char *manualEncoding)
 {
 	if (mp3File == NULL || mp3File->isNull() || mp3File->tag() == NULL)
 		return;
@@ -63,23 +63,29 @@ void TagConvertor::load()
 	_genre = tag->genre();
 	_comment = tag->comment();
 
-	// guess encoding (increase simple size for accuracy)
-	TagLib::String all =
-			_title + _title + _title +
-			_artist + _artist + _artist +
-			_album + _album +
-			_genre + _comment;
+	if (manualEncoding == NULL){
+		// guess encoding (increase simple size for accuracy)
+		TagLib::String all =
+				_title + _title + _title +
+				_artist + _artist + _artist +
+				_album + _album +
+				_genre + _comment;
 
-	const char *src = all.toCString(TagConvertor::isUtf8Tag(all));
-//	cout << "src: " << src << endl;
+		const char *src = all.toCString(TagConvertor::isUtf8Tag(all));
+//		cout << "src: " << src << endl;
 
-	uchardet_t ud = uchardet_new();
-	uchardet_handle_data(ud, src, strlen(src));
-	uchardet_data_end(ud);
+		uchardet_t ud = uchardet_new();
+		uchardet_handle_data(ud, src, strlen(src));
+		uchardet_data_end(ud);
 
-	strcpy(_encoding, uchardet_get_charset(ud));
-	cout << "encoding: " << _encoding << endl;
-	uchardet_delete(ud);
+		strcpy(_encoding, uchardet_get_charset(ud));
+		cout << "auto encoding: " << _encoding << endl;
+		uchardet_delete(ud);
+
+	} else {
+		cout << "manual encoding: " << manualEncoding << endl;
+		strcpy(_encoding, manualEncoding);
+	}
 
 	_utf8Title->clear();
 	_utf8Artist->clear();
