@@ -1,9 +1,30 @@
+/*
+Copyright (C) 2012 Carlos Tse <copperoxide@gmail.com>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 #include "main_window.h"
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
 	tc = NULL;
 	mp3File = NULL;
+
+	// icon
+	setWindowIcon(WIN_ICON);
 
 	// Qt Translator
 	trans = new QTranslator();
@@ -42,14 +63,16 @@ void MainWindow::openFile()
 	dialog->setFileMode(QFileDialog::ExistingFile);
 	dialog->setFilter("MP3 files (*.mp3)");
 	dialog->setViewMode(QFileDialog::Detail);
+	dialog->setWindowIcon(WIN_ICON);
 
 	if (dialog->exec() == QDialog::Accepted) {
 		QStringListIterator iterator(dialog->selectedFiles());
 
 		if (iterator.hasNext()) {
-			QByteArray text = iterator.next().toLocal8Bit();
-			char *data = new char[text.size() + 1];
-			strcpy(data, text.constData());
+			QString text = iterator.next();
+			wchar_t *data = new wchar_t[text.size() + 4];
+			int len = text.toWCharArray(data);
+			data[len] = '\0';
 			loadMp3(data);
 			delete[] data;
 		}
@@ -229,7 +252,7 @@ void MainWindow::updateInterface()
 	actZht->setText(tr("&Traditional Chinese"));
 	actZhs->setText(tr("&Simplified Chinese"));
 	menuInterface->setTitle(tr("&Interface"));
-	actZhsToZht->setText(tr("&Simplified Chinese to Simplified"));
+	actZhsToZht->setText(tr("&Simplified Chinese to Traditional"));
 	actZhtToZhs->setText(tr("&Traditional Chinese to Simplified"));
 	menuChiConv->setTitle(tr("&Chinese Convert"));
 	actHelp->setText(tr("&Help"));
@@ -251,9 +274,9 @@ void MainWindow::updateInterface()
 	statusBar()->showMessage("");
 }
 
-void MainWindow::loadMp3(const char *mp3FilePath)
+void MainWindow::loadMp3(wchar_t *mp3FilePath)
 {
-	std::cout << "loadMp3: " << mp3FilePath << endl;
+	std::cout << "loadMp3: " << QString::fromWCharArray(mp3FilePath).toLocal8Bit().data() << std::endl;
 
 	if (mp3FilePath == NULL)
 		return;
@@ -303,6 +326,7 @@ void MainWindow::convertMp3()
 	bool success = tc->convert() && tc->save();
 	std::cout << "save success: " << success << "endl" << endl;
 	QMessageBox msgBox;
+	msgBox.setWindowIcon(WIN_ICON);
 	msgBox.setWindowTitle(tr("Save"));
 	msgBox.setInformativeText(success? tr("Saved"): tr("Save Failed"));
 	msgBox.setStandardButtons(QMessageBox::Ok);
@@ -317,6 +341,7 @@ void MainWindow::convertMp3()
 void MainWindow::help()
 {
 	QMessageBox msgBox;
+	msgBox.setWindowIcon(WIN_ICON);
 	msgBox.setWindowTitle(tr("Help"));
 	msgBox.setInformativeText(tr("Working in Process"));
 	msgBox.setStandardButtons(QMessageBox::Ok);
@@ -331,6 +356,7 @@ void MainWindow::about()
 	t.append(tr("By Carlos Tse <copperoxide@gmail.com>"));
 
 	QMessageBox msgBox;
+	msgBox.setWindowIcon(WIN_ICON);
 	msgBox.setWindowTitle(tr("About"));
 	msgBox.setInformativeText(t);
 	msgBox.setStandardButtons(QMessageBox::Ok);

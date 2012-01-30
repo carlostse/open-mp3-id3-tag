@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../src/main_window.cpp" line="238"/>
-        <source>&amp;Simplified Chinese to Simplified</source>
+        <source>&amp;Simplified Chinese to Traditional</source>
         <translation>簡體中文轉正體</translation>
     </message>
     <message>

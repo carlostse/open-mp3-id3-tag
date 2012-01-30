@@ -1,0 +1,7 @@
+Version: 0.0.2
+Date: 2012/01/30
+Changes:
+1. Add icon
+2. Replace iconv with QTextCodec
+3. Use wchar_t* for file path
+4. Fix Translation problem

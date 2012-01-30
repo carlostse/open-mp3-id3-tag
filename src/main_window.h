@@ -73,7 +73,7 @@ private:
 
 	void createMenu();
 	void initWidget();
-	void loadMp3(const char *mp3FilePath);
+	void loadMp3(wchar_t *mp3FilePath);
 	void setText();
 	static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
 

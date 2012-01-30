@@ -3,3 +3,4 @@ release/*
 Makefile*
 *.pro.user
 *.qm
+*.ocd

@@ -1,3 +1,21 @@
+/*
+Copyright (C) 2012 Carlos Tse <copperoxide@gmail.com>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 #include "tag_convertor.h"
 
 TagConvertor::TagConvertor(TagLib::FileRef *mp3File)
@@ -72,13 +90,22 @@ void TagConvertor::load()
 	// convert to UTF-8 for display in GUI and save
 	if (strcmp(_encoding, "UTF-8") != 0){
 		cout << "converting " << _encoding << " to UTF8..." << endl;
-		EncodingConvertor *conv = new EncodingConvertor(_encoding, "UTF-8");
-		_utf8Title->append(QString::fromUtf8(conv->convert((char *) _title.toCString())));
-		_utf8Artist->append(QString::fromUtf8(conv->convert((char *) _artist.toCString())));
-		_utf8Album->append(QString::fromUtf8(conv->convert((char *) _album.toCString())));
-		_utf8Genre->append(QString::fromUtf8(conv->convert((char *) _genre.toCString())));
-		_utf8Comment->append(QString::fromUtf8(conv->convert((char *) _comment.toCString())));
+		EncodingConvertor *conv = new EncodingConvertor(_encoding/*, "UTF-8"*/);
+
+//		_utf8Title->append(QString::fromUtf8(conv->convert((char *) _title.toCString())));
+//		_utf8Artist->append(QString::fromUtf8(conv->convert((char *) _artist.toCString())));
+//		_utf8Album->append(QString::fromUtf8(conv->convert((char *) _album.toCString())));
+//		_utf8Genre->append(QString::fromUtf8(conv->convert((char *) _genre.toCString())));
+//		_utf8Comment->append(QString::fromUtf8(conv->convert((char *) _comment.toCString())));
+
+		_utf8Title->append(conv->convert((char *) _title.toCString()));
+		_utf8Artist->append(conv->convert((char *) _artist.toCString()));
+		_utf8Album->append(conv->convert((char *) _album.toCString()));
+		_utf8Genre->append(conv->convert((char *) _genre.toCString()));
+		_utf8Comment->append(conv->convert((char *) _comment.toCString()));
+
 		delete conv;
+		cout << "converted" << endl;
 
 	} else {
 		cout << "copy to utf8..." << endl;

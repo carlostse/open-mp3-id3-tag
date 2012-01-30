@@ -1,9 +1,8 @@
 QT = core gui
-TARGET = mp3id3_encoding_conv
+TARGET = open_mp3_id3_tag
 TEMPLATE = app
 
 HEADERS += \
-    src/iconv/iconv.h \
     src/uchardet/uchardet.h \
     src/taglib/tag.h \
     src/taglib/fileref.h \
@@ -22,4 +21,10 @@ SOURCES += \
 
 FORMS +=
 
-LIBS += -Llib -ltag -liconv-2 -luchardet -lopencc
+LIBS += -Llib -ltag -luchardet -lopencc
+
+RC_FILE = mp3id3_encoding_conv.rc
+
+RESOURCES = mp3id3_encoding_conv.qrc
+
+TRANSLATIONS = ts/zhs.ts ts/zht.ts
