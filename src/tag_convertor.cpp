@@ -94,7 +94,7 @@ void TagConvertor::load(const char *manualEncoding)
 	_utf8Comment->clear();
 
 	// convert to UTF-8 for display in GUI and save
-	if (strcmp(_encoding, "UTF-8") != 0){
+	if (_encoding != NULL && strlen(_encoding) > 0 && strcmp(_encoding, "UTF-8") != 0){
 		cout << "converting " << _encoding << " to UTF8..." << endl;
 		EncodingConvertor *conv = new EncodingConvertor(_encoding/*, "UTF-8"*/);
 

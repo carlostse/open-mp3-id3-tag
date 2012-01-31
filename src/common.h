@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef COMMON_H
 #define COMMON_H
 
-#define VERSION "0.0.3"
+#define VERSION "0.0.4"
 #define WIN_ICON QIcon(":/icon")
 
 #endif // COMMON_H
