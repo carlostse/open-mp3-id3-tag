@@ -53,15 +53,15 @@ class MainWindow : public QMainWindow
 private:
 	bool disableComboxSignal;
 	TagConvertor *tc;
-
-	QComboBox *cbEnc;
-	QPushButton *btnOpen, *btnConvert;
-	QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
-	QPlainTextEdit *editComment;
 	TagLib::FileRef *mp3File;
 
+	QComboBox *cbEnc;
+	QPushButton *btnOpen, *btnConvert, *btnClose;
+	QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
+	QPlainTextEdit *editComment;
+
 	QMenu *menuFile, *menuInterface, *menuChiConv, *menuHelp;
-	QAction *actOpen, *actConvert, *actExit,
+	QAction *actOpen, *actConvert, *actClose, *actExit,
 			*actEn, *actZht, *actZhs,
 			*actZhsToZht, *actZhtToZhs,
 			*actHelp, *actAbout;
@@ -89,6 +89,7 @@ public:
 public slots:
 	void openFile();
 	void convertMp3();
+	void closeFile();
 	void help();
 	void about();
 	void changeLangEn();

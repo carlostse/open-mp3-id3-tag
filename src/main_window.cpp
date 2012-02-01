@@ -88,12 +88,16 @@ void MainWindow::createMenu()
 	actConvert = new QAction(this);
 	actConvert->setShortcut(QKeySequence("Ctrl+E"));
 
+	actClose = new QAction(this);
+	actClose->setShortcut(QKeySequence("Ctrl+W"));
+
 	actExit = new QAction(this);
 	actExit->setShortcut(QKeySequence("Ctrl+X"));
 
 	menuFile = menuBar()->addMenu("");
 	menuFile->addAction(actOpen);
 	menuFile->addAction(actConvert);
+	menuFile->addAction(actClose);
 	menuFile->addSeparator();
 	menuFile->addAction(actExit);
 
@@ -130,6 +134,7 @@ void MainWindow::createMenu()
 
 	// signal and slot
 	QObject::connect(actOpen, SIGNAL(triggered()), this, SLOT(openFile()));
+	QObject::connect(actClose, SIGNAL(triggered()), this, SLOT(closeFile()));
 	QObject::connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
 	QObject::connect(actHelp, SIGNAL(triggered()), this, SLOT(help()));
 	QObject::connect(actAbout, SIGNAL(triggered()), this, SLOT(about()));
@@ -160,9 +165,11 @@ void MainWindow::initWidget()
 	// row 0
 	btnOpen = new QPushButton(this);
 	btnConvert = new QPushButton(this);
+	btnClose = new QPushButton(this);
 	hLayout[row] = new QHBoxLayout();
 	hLayout[row]->addWidget(btnOpen);
 	hLayout[row]->addWidget(btnConvert);
+	hLayout[row]->addWidget(btnClose);
 
 	// row 1
 	lbl1 = getQLabel();
@@ -231,6 +238,7 @@ void MainWindow::initWidget()
 	// signal and slot
 	QObject::connect(btnOpen, SIGNAL(clicked()), this, SLOT(openFile()));
 	QObject::connect(btnConvert, SIGNAL(clicked()), this, SLOT(convertMp3()));
+	QObject::connect(btnClose, SIGNAL(clicked()), this, SLOT(closeFile()));
 	QObject::connect(cbEnc, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(reloadEncoding(const QString &)));
 }
 
@@ -259,8 +267,9 @@ void MainWindow::updateInterface()
 
 	// menu
 	menuFile->setTitle(tr("&File"));
-	actOpen->setText(tr("&Open"));
-	actConvert->setText(tr("Conv&ert ID3 Tag"));
+	actOpen->setText(tr("Open"));
+	actConvert->setText(tr("Convert ID3 Tag"));
+	actClose->setText(tr("Close"));
 	actExit->setText(tr("E&xit"));
 	actEn->setText(tr("&English"));
 	actZht->setText(tr("&Traditional Chinese"));
@@ -276,6 +285,7 @@ void MainWindow::updateInterface()
 	// buttons
 	btnOpen->setText(tr("Open"));
 	btnConvert->setText(tr("Convert ID3 Tag"));
+	btnClose->setText(tr("Close"));
 
 	// labels
 	lbl1->setText(tr("Encoding: "));
@@ -353,7 +363,7 @@ void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
 
 void MainWindow::convertMp3()
 {
-	if (tc == NULL)
+	if (tc == NULL || mp3File == NULL || mp3File->isNull())
 		return;
 
 	tc->setUtf8Title(editTitle->text());
@@ -373,6 +383,25 @@ void MainWindow::convertMp3()
 
 	if (success)
 		readMp3Info();
+}
+
+void MainWindow::closeFile()
+{
+	editTitle->setText(NULL);
+	editArtist->setText(NULL);
+	editAlbum->setText(NULL);
+	editGenre->setText(NULL);
+	editComment->setPlainText(NULL);
+
+	if (tc != NULL){
+		delete tc;
+		tc = NULL;
+	}
+
+	if (mp3File != NULL){
+		delete mp3File;
+		mp3File = NULL;
+	}
 }
 
 void MainWindow::help()
