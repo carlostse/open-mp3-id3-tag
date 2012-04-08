@@ -23,8 +23,24 @@ FORMS +=
 
 LIBS += -Llib -ltag -luchardet -lopencc
 
-RC_FILE = mp3id3_encoding_conv.rc
-
 RESOURCES = mp3id3_encoding_conv.qrc
 
 TRANSLATIONS = ts/zhs.ts ts/zht.ts
+
+CONFIG(debug, debug|release) {
+    message(Debug build)
+    DESTDIR = debug
+    OBJECTS_DIR = debug/obj
+} else {
+    message(Release build)
+    DESTDIR = release
+    OBJECTS_DIR = release/obj
+}
+
+win32 {
+    RC_FILE = mp3id3_encoding_conv.rc
+}
+
+macx {
+    ICON = icon.icns
+}

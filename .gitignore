@@ -4,3 +4,4 @@ Makefile*
 *.pro.user
 *.qm
 *.ocd
+.DS_Store
