@@ -45,6 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #define NUM_OF_COMMENT_ROW 5
 #define MIN_SIZE 380, 280
 #define MAX_SIZE 580, 420
+#define LBL_WIDTH 70
 
 class MainWindow : public QMainWindow
 {
@@ -77,7 +78,7 @@ private:
 
 	void createMenu();
 	void initWidget();
-	void loadMp3(wchar_t *mp3FilePath);
+	void loadMp3(QString *mp3FilePath);
 	void setText();
 	void readMp3Info(const char *encoding = NULL);
 	static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);

@@ -53,7 +53,7 @@ QLabel* MainWindow::getQLabel(int width = 0)
 {
 	QLabel *lbl = new QLabel(this);
 	lbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	lbl->setFixedWidth(width > 0? width: 60);
+	lbl->setFixedWidth(width > 0? width: LBL_WIDTH);
 	return lbl;
 }
 
@@ -70,11 +70,7 @@ void MainWindow::openFile()
 
 		if (iterator.hasNext()) {
 			QString text = iterator.next();
-			wchar_t *data = new wchar_t[text.size() + 4];
-			int len = text.toWCharArray(data);
-			data[len] = '\0';
-			loadMp3(data);
-			delete[] data;
+			loadMp3(&text);
 		}
 	}
 }
@@ -259,9 +255,9 @@ void MainWindow::updateLangCheckbox()
 void MainWindow::updateInterface()
 {
 	if (language == ZHT)
-		trans->load("zht.qm");
+		trans->load(QCoreApplication::applicationDirPath() + "/zht.qm");
 	else if (language == ZHS)
-		trans->load("zhs.qm");
+		trans->load(QCoreApplication::applicationDirPath() + "/zhs.qm");
 	else
 		trans->load("");
 
@@ -299,10 +295,22 @@ void MainWindow::updateInterface()
 //	statusBar()->showMessage("");
 }
 
-void MainWindow::loadMp3(wchar_t *mp3FilePath)
+void MainWindow::loadMp3(QString *mp3FilePath)
 {
-	std::cout << "loadMp3: " << QString::fromWCharArray(mp3FilePath).toLocal8Bit().data() << std::endl;
+	if (mp3FilePath == NULL || mp3FilePath->size() == 0)
+		return;
+	
+	std::cout << "loadMp3: " << mp3FilePath->toLocal8Bit().data() << std::endl;
 
+#ifndef Q_OS_MAC
+	wchar_t *data = new wchar_t[mp3FilePath->size() + 4];
+	int len = mp3FilePath->toWCharArray(data);
+	data[len] = '\0';
+#else
+	char *data = new char[mp3FilePath->size() + 1];
+	strcpy(data, mp3FilePath->toLocal8Bit().data());
+#endif
+	
 	if (mp3FilePath == NULL)
 		return;
 
@@ -312,9 +320,10 @@ void MainWindow::loadMp3(wchar_t *mp3FilePath)
 	if (mp3File != NULL)
 		delete mp3File;
 
-	mp3File = new TagLib::FileRef(mp3FilePath);
+	mp3File = new TagLib::FileRef(data);
 	tc = new TagConvertor(mp3File);
 	readMp3Info();
+	delete[] data;
 }
 
 void MainWindow::setText()

@@ -18,10 +18,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <QApplication>
 #include "main_window.h"
+#include "common.h"
+
+extern char *PKGDATADIR;
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+
+	QString path = QCoreApplication::applicationDirPath();
+	PKGDATADIR = new char[path.length() + 1];
+	strcpy(PKGDATADIR, path.toLocal8Bit().data());
+	std::cout << PKGDATADIR << std::endl;
 
 	MainWindow w;
 	w.show();
