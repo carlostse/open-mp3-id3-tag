@@ -6,6 +6,17 @@ HEADERS += \
     src/uchardet/uchardet.h \
     src/taglib/tag.h \
     src/taglib/fileref.h \
+    src/opencc/opencc.h \
+    src/opencc/opencc_types.h \
+    src/opencc/dictionary/text.h \
+    src/opencc/dictionary/datrie.h \
+    src/opencc/dictionary/abstract.h \
+    src/opencc/utils.h \
+    src/opencc/encoding.h \
+    src/opencc/dictionary_set.h \
+    src/opencc/converter.h \
+    src/opencc/config_reader.h \
+    src/opencc/dictionary_group.h \
     src/encoding_convertor.h \
     src/common.h \
     src/tag_convertor.h \
@@ -13,15 +24,30 @@ HEADERS += \
     src/chinese_convertor.h
 
 SOURCES += \
+    src/opencc/opencc.c \
+    src/opencc/dictionary/text.c \
+    src/opencc/dictionary/datrie.c \
+    src/opencc/dictionary/abstract.c \
+    src/opencc/utils.c \
+    src/opencc/encoding.c \
+    src/opencc/dictionary_set.c \
+    src/opencc/converter.c \
+    src/opencc/config_reader.c \
+    src/opencc/dictionary_group.c \
     src/main.cpp \
     src/encoding_convertor.cpp \
     src/tag_convertor.cpp \
     src/main_window.cpp \
-    src/chinese_convertor.cpp
+    src/chinese_convertor.cpp \
+    src/common.c
 
 FORMS +=
 
-LIBS += -Llib -ltag -luchardet -lopencc
+LIBS += -Llib -ltag -luchardet
+
+linux-g++ {
+    LIBS += -L/lib64 -lz
+}
 
 RESOURCES = mp3id3_encoding_conv.qrc
 
@@ -29,11 +55,11 @@ TRANSLATIONS = ts/zhs.ts ts/zht.ts
 
 CONFIG(debug, debug|release) {
     message(Debug build)
-    DESTDIR = debug
+    DESTDIR = ./
     OBJECTS_DIR = debug/obj
 } else {
     message(Release build)
-    DESTDIR = release
+    DESTDIR = ./
     OBJECTS_DIR = release/obj
 }
 

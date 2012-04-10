@@ -36,14 +36,14 @@ enum _opencc_error
 	OPENCC_ERROR_DICTLOAD,
 	OPENCC_ERROR_CONFIG,
 	OPENCC_ERROR_ENCODIND,
-	OPENCC_ERROR_CONVERTER,
+    OPENCC_ERROR_CONVERTER
 };
 typedef enum _opencc_error opencc_error;
 
 enum _opencc_dictionary_type
 {
 	OPENCC_DICTIONARY_TYPE_TEXT,
-	OPENCC_DICTIONARY_TYPE_DATRIE,
+    OPENCC_DICTIONARY_TYPE_DATRIE
 };
 typedef enum _opencc_dictionary_type opencc_dictionary_type;
 
@@ -51,7 +51,7 @@ enum _opencc_conversion_mode
 {
 	OPENCC_CONVERSION_FAST,
 	OPENCC_CONVERSION_SEGMENT_ONLY,
-	OPENCC_CONVERSION_LIST_CANDIDATES,
+    OPENCC_CONVERSION_LIST_CANDIDATES
 };
 typedef enum _opencc_conversion_mode opencc_conversion_mode;
 
