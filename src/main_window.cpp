@@ -302,13 +302,14 @@ void MainWindow::loadMp3(QString *mp3FilePath)
 	
 	std::cout << "loadMp3: " << mp3FilePath->toLocal8Bit().data() << std::endl;
 
-#ifndef Q_OS_MAC
+#ifdef Q_OS_WIN
 	wchar_t *data = new wchar_t[mp3FilePath->size() + 4];
 	int len = mp3FilePath->toWCharArray(data);
 	data[len] = '\0';
 #else
-	char *data = new char[mp3FilePath->size() + 1];
-	strcpy(data, mp3FilePath->toLocal8Bit().data());
+	QByteArray ba = QFile::encodeName(*mp3FilePath).constData();
+	char *data = new char[ba.length() + 1];
+	strcpy(data, ba.constData());
 #endif
 	
 	if (mp3FilePath == NULL)
