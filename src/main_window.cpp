@@ -18,6 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "main_window.h"
 
+#ifdef Q_OS_UNIX
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(qtwcodecs)
+Q_IMPORT_PLUGIN(qcncodecs)
+#endif
+
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
 	tc = NULL;

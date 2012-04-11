@@ -45,10 +45,6 @@ FORMS +=
 
 LIBS += -Llib -ltag -luchardet
 
-linux-g++ {
-    LIBS += -L/lib64 -lz
-}
-
 RESOURCES = mp3id3_encoding_conv.qrc
 
 TRANSLATIONS = ts/zhs.ts ts/zht.ts
@@ -69,4 +65,10 @@ win32 {
 
 macx {
     ICON = icon.icns
+    QTPLUGIN += qtwcodecs qcncodecs
+}
+
+linux-g++ {
+    LIBS += -L/lib64 -lz
+    QTPLUGIN += qtwcodecs qcncodecs
 }
