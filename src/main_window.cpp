@@ -55,11 +55,11 @@ MainWindow::~MainWindow()
 	delete trans;
 }
 
-QLabel* MainWindow::getQLabel(int width = 0)
+QLabel* MainWindow::getQLabel()
 {
 	QLabel *lbl = new QLabel(this);
 	lbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	lbl->setFixedWidth(width > 0? width: LBL_WIDTH);
+	lbl->setFixedWidth(LBL_WIDTH);
 	return lbl;
 }
 
@@ -308,18 +308,20 @@ void MainWindow::loadMp3(QString *mp3FilePath)
 	
 	std::cout << "loadMp3: " << mp3FilePath->toLocal8Bit().data() << std::endl;
 
+	QString status(*mp3FilePath);
+
 #ifdef Q_OS_WIN
 	wchar_t *data = new wchar_t[mp3FilePath->size() + 4];
 	int len = mp3FilePath->toWCharArray(data);
 	data[len] = '\0';
+	status.replace("/", "\\");
 #else
 	QByteArray ba = QFile::encodeName(*mp3FilePath).constData();
 	char *data = new char[ba.length() + 1];
 	strcpy(data, ba.constData());
 #endif
 	
-	if (mp3FilePath == NULL)
-		return;
+	statusBar()->showMessage(status);
 
 	if (tc != NULL)
 		delete tc;
@@ -403,6 +405,7 @@ void MainWindow::convertMp3()
 
 void MainWindow::closeFile()
 {
+	statusBar()->clearMessage();
 	editTitle->setText(NULL);
 	editArtist->setText(NULL);
 	editAlbum->setText(NULL);
@@ -435,7 +438,7 @@ void MainWindow::about()
 	QString t = tr("MP3 ID3 Tag Encoding Converter ");
 	t.append(VERSION);
 	t.append("\n");
-	t.append(tr("By Carlos Tse <copperoxide@gmail.com>"));
+	t.append("By Carlos Tse <copperoxide@gmail.com>");
 
 	QMessageBox msgBox;
 	msgBox.setWindowIcon(WIN_ICON);

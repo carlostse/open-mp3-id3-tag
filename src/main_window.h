@@ -43,7 +43,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define NUM_OF_WIN_ROW 7
 #define NUM_OF_COMMENT_ROW 5
-#define MIN_SIZE 380, 280
+#ifdef Q_OS_MAC
+#define MIN_SIZE 380, 330
+#else
+#define MIN_SIZE 380, 290
+#endif
 #define MAX_SIZE 580, 420
 #define LBL_WIDTH 70
 
@@ -72,7 +76,7 @@ private:
 	enum Language {ENG, ZHT, ZHS};
 	Language language;
 
-	QLabel* getQLabel(int);
+	QLabel* getQLabel();
 	void updateLangCheckbox();
 	void updateInterface();
 
