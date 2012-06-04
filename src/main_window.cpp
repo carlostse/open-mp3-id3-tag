@@ -65,6 +65,7 @@ QLabel* MainWindow::getQLabel()
 
 void MainWindow::openFile()
 {
+	/*
 	QFileDialog *dialog = new QFileDialog(new QLabel("Open"));
 	dialog->setFileMode(QFileDialog::ExistingFile);
 	dialog->setFilter("MP3 files (*.mp3)");
@@ -79,6 +80,12 @@ void MainWindow::openFile()
 			loadMp3(&text);
 		}
 	}
+	*/
+
+	loadMp3(QFileDialog::getOpenFileName(
+				this, tr("Open MP3 Files"),
+				QDesktopServices::storageLocation(QDesktopServices::MusicLocation),
+				"MP3 Files (*.mp3)", 0, 0));
 }
 
 void MainWindow::createMenu()
@@ -301,27 +308,27 @@ void MainWindow::updateInterface()
 //	statusBar()->showMessage("");
 }
 
-void MainWindow::loadMp3(QString *mp3FilePath)
+void MainWindow::loadMp3(QString mp3FilePath)
 {
-	if (mp3FilePath == NULL || mp3FilePath->size() == 0)
+	if (mp3FilePath.length() == 0){
+		statusBar()->clearMessage();
 		return;
+	}
 	
-	std::cout << "loadMp3: " << mp3FilePath->toLocal8Bit().data() << std::endl;
-
-	QString status(*mp3FilePath);
+	std::cout << "loadMp3: " << mp3FilePath.toLocal8Bit().data() << std::endl;
 
 #ifdef Q_OS_WIN
-	wchar_t *data = new wchar_t[mp3FilePath->size() + 4];
-	int len = mp3FilePath->toWCharArray(data);
+	wchar_t *data = new wchar_t[mp3FilePath.length() + 4];
+	int len = mp3FilePath.toWCharArray(data);
 	data[len] = '\0';
-	status.replace("/", "\\");
+	mp3FilePath.replace("/", "\\");
 #else
 	QByteArray ba = QFile::encodeName(*mp3FilePath).constData();
 	char *data = new char[ba.length() + 1];
 	strcpy(data, ba.constData());
 #endif
-	
-	statusBar()->showMessage(status);
+
+	statusBar()->showMessage(mp3FilePath);
 
 	if (tc != NULL)
 		delete tc;

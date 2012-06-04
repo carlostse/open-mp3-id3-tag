@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
 #include <QFileDialog>
+#include <QDesktopServices>
 #include <QMessageBox>
 #include <QTranslator>
 #include <QLocale>
@@ -82,7 +83,7 @@ private:
 
 	void createMenu();
 	void initWidget();
-	void loadMp3(QString *mp3FilePath);
+	void loadMp3(QString mp3FilePath);
 	void setText();
 	void readMp3Info(const char *encoding = NULL);
 	static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
