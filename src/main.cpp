@@ -24,15 +24,15 @@ extern char *PKGDATADIR;
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
+    QApplication a(argc, argv);
 
-	QString path = QCoreApplication::applicationDirPath();
-	PKGDATADIR = new char[path.length() + 1];
-	strcpy(PKGDATADIR, path.toLocal8Bit().data());
-	std::cout << PKGDATADIR << std::endl;
+    QString path = QCoreApplication::applicationDirPath();
+    PKGDATADIR = new char[path.length() + 1];
+    strcpy(PKGDATADIR, path.toLocal8Bit().data());
+    std::cout << PKGDATADIR << std::endl;
 
-	MainWindow w;
-	w.show();
+    MainWindow w;
+    w.show();
 
-	return a.exec();
+    return a.exec();
 }

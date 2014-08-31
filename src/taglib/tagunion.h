@@ -23,21 +23,73 @@
  *   http://www.mozilla.org/MPL/                                           *
  ***************************************************************************/
 
-#ifndef TAGLIB_EXPORT_H
-#define TAGLIB_EXPORT_H
+#ifndef TAGLIB_TAGUNION_H
+#define TAGLIB_TAGUNION_H
 
-#if defined(TAGLIB_STATIC)
-#define TAGLIB_EXPORT
-#elif (defined(_WIN32) || defined(_WIN64))
-#ifdef MAKE_TAGLIB_LIB
-#define TAGLIB_EXPORT __declspec(dllexport)
-#else
-#define TAGLIB_EXPORT __declspec(dllimport)
-#endif
-#elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 1)
-#define TAGLIB_EXPORT __attribute__ ((visibility("default")))
-#else
-#define TAGLIB_EXPORT
-#endif
+#include "tag.h"
 
+#ifndef DO_NOT_DOCUMENT
+
+namespace TagLib {
+
+  /*!
+   * \internal
+   */
+
+  class TagUnion : public Tag
+  {
+  public:
+
+    enum AccessType { Read, Write };
+
+    /*!
+     * Creates a TagLib::Tag that is the union of \a first, \a second, and
+     * \a third.  The TagUnion takes ownership of these tags and will handle
+     * their deletion.
+     */
+    TagUnion(Tag *first = 0, Tag *second = 0, Tag *third = 0);
+
+    virtual ~TagUnion();
+
+    Tag *operator[](int index) const;
+    Tag *tag(int index) const;
+
+    void set(int index, Tag *tag);
+
+    virtual String title() const;
+    virtual String artist() const;
+    virtual String album() const;
+    virtual String comment() const;
+    virtual String genre() const;
+    virtual uint year() const;
+    virtual uint track() const;
+
+    virtual void setTitle(const String &s);
+    virtual void setArtist(const String &s);
+    virtual void setAlbum(const String &s);
+    virtual void setComment(const String &s);
+    virtual void setGenre(const String &s);
+    virtual void setYear(uint i);
+    virtual void setTrack(uint i);
+    virtual bool isEmpty() const;
+
+    template <class T> T *access(int index, bool create)
+    {
+      if(!create || tag(index))
+        return static_cast<T *>(tag(index));
+
+      set(index, new T);
+      return static_cast<T *>(tag(index));
+    }
+
+  private:
+    TagUnion(const Tag &);
+    TagUnion &operator=(const Tag &);
+
+    class TagUnionPrivate;
+    TagUnionPrivate *d;
+  };
+}
+
+#endif
 #endif
