@@ -17,6 +17,7 @@ HEADERS += \
     src/opencc/converter.h \
     src/opencc/config_reader.h \
     src/opencc/dictionary_group.h \
+    src/drop_area.h \
     src/encoding_convertor.h \
     src/common.h \
     src/tag_convertor.h \
@@ -35,6 +36,7 @@ SOURCES += \
     src/opencc/config_reader.c \
     src/opencc/dictionary_group.c \
     src/main.cpp \
+    src/drop_area.cpp \
     src/encoding_convertor.cpp \
     src/tag_convertor.cpp \
     src/main_window.cpp \

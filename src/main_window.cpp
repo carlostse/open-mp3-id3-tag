@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     updateInterface();
 
     // open file dialog
-    openFile();
+    // openFile();
 }
 
 MainWindow::~MainWindow()
@@ -87,6 +87,18 @@ void MainWindow::openFile()
             QDesktopServices::storageLocation(QDesktopServices::MusicLocation),
             "MP3 Files (*.mp3)", 0, 0)
     );
+}
+
+void MainWindow::droppedFiles(const QList<QUrl> list)
+{
+    if (list.size() < 1)
+        return;
+
+    QString url = list.at(0).path(),
+            fileName = url.mid(1, url.length() - 1);
+
+    qDebug() << "file: " << fileName;
+    loadMp3(fileName);
 }
 
 void MainWindow::createMenu()
@@ -235,6 +247,12 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl6);
     hLayout[row]->addWidget(editComment);
 
+    // row 7
+    dropArea = new DropArea(QSize(380, 50), this);
+    dropArea->setText(tr("Drop MP3 here"));
+    hLayout[++row] = new QHBoxLayout();
+    hLayout[row]->addWidget(dropArea);
+
     // vertical layout
     QVBoxLayout *vLayout = new QVBoxLayout();
     for (int i = 0; i < NUM_OF_WIN_ROW; i++)
@@ -250,6 +268,7 @@ void MainWindow::initWidget()
     QObject::connect(btnConvert, SIGNAL(clicked()), this, SLOT(convertMp3()));
     QObject::connect(btnClose, SIGNAL(clicked()), this, SLOT(closeFile()));
     QObject::connect(cbEnc, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(reloadEncoding(const QString &)));
+    QObject::connect(dropArea, SIGNAL(dropped(const QList<QUrl>)), this, SLOT(droppedFiles(const QList<QUrl>)));
 }
 
 void MainWindow::updateLangCheckbox()

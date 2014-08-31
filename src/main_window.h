@@ -41,8 +41,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "common.h"
 #include "tag_convertor.h"
 #include "chinese_convertor.h"
+#include "drop_area.h"
 
-#define NUM_OF_WIN_ROW 7
+#define NUM_OF_WIN_ROW 8
 #define NUM_OF_COMMENT_ROW 5
 #ifdef Q_OS_MAC
 #define MIN_SIZE 380, 330
@@ -65,6 +66,7 @@ private:
 	QPushButton *btnOpen, *btnConvert, *btnClose;
 	QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
 	QPlainTextEdit *editComment;
+    DropArea *dropArea;
 
 	QMenu *menuFile, *menuInterface, *menuChiConv, *menuHelp;
 	QAction *actOpen, *actConvert, *actClose, *actExit,
@@ -94,6 +96,7 @@ public:
 
 public slots:
 	void openFile();
+    void droppedFiles(const QList<QUrl>);
 	void convertMp3();
 	void closeFile();
 	void help();
