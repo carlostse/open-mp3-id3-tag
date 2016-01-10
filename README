@@ -13,6 +13,10 @@ Features:
 4. Traditional / Simplified Chinese conversion;
 5. Source MP3 ID3 Tag encoding detection
 
+Build Prerequisites:
+* [TagLib](http://taglib.github.io/)
+* [uchardet](https://github.com/BYVoid/uchardet)
+
 ======================================================================
 
 開放 MP3 ID3 編碼轉換及編輯工具
@@ -29,3 +33,7 @@ ID3 標籤多應用於MP3格式的音訊檔案中。它可以將相關的曲名�
 3. MP3 ID3 編輯；
 4. 繁簡中文轉換；
 5. 來源編碼檢測
+
+依賴庫：
+* [TagLib](http://taglib.github.io/)
+* [uchardet](https://github.com/BYVoid/uchardet)

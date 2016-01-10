@@ -3,9 +3,6 @@ TARGET = open_mp3_id3_tag
 TEMPLATE = app
 
 HEADERS += \
-    src/uchardet/uchardet.h \
-    src/taglib/tag.h \
-    src/taglib/fileref.h \
     src/opencc/opencc.h \
     src/opencc/opencc_types.h \
     src/opencc/dictionary/text.h \
@@ -45,7 +42,13 @@ SOURCES += \
 
 FORMS +=
 
-LIBS += -Llib -ltag -luchardet
+INCLUDEPATH += ../uchardet-0.0.5/src \
+    ../taglib-1.9.1/ \
+    ../taglib-1.9.1/taglib \
+    ../taglib-1.9.1/taglib/toolkit
+
+LIBS += -L../taglib-1.9.1/taglib -ltag \
+    -L../uchardet-0.0.5/src -luchardet
 
 RESOURCES = mp3id3_encoding_conv.qrc
 

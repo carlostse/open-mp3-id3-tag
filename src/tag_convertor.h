@@ -21,9 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <iostream>
 #include <QString>
-#include "taglib/fileref.h"
-#include "taglib/tag.h"
-#include "uchardet/uchardet.h"
+#include <uchardet.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
 #include "encoding_convertor.h"
 
 using std::cout;
