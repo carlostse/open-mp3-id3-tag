@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "encoding_convertor.h"
 
+namespace Mp3Id3EncCov
+{
 EncodingConvertor::EncodingConvertor(const char* fromCharset/*, const char* toCharset*/)
 {
     _fromCharset = fromCharset;
@@ -132,3 +134,4 @@ char *EncodingConvertor::convert(const char *input) const
     return output;
 }
 */
+}

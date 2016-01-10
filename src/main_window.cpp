@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "main_window.h"
 
+namespace Mp3Id3EncCov
+{
 #ifdef Q_OS_UNIX
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(qtwcodecs)
@@ -45,9 +47,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     // initial interface
     initWidget();
     updateInterface();
-
-    // open file dialog
-    // openFile();
 }
 
 MainWindow::~MainWindow()
@@ -65,27 +64,10 @@ QLabel* MainWindow::getQLabel()
 
 void MainWindow::openFile()
 {
-    /*
-    QFileDialog *dialog = new QFileDialog(new QLabel("Open"));
-    dialog->setFileMode(QFileDialog::ExistingFile);
-    dialog->setFilter("MP3 files (*.mp3)");
-    dialog->setViewMode(QFileDialog::Detail);
-    dialog->setWindowIcon(WIN_ICON);
-
-    if (dialog->exec() == QDialog::Accepted) {
-        QStringListIterator iterator(dialog->selectedFiles());
-
-        if (iterator.hasNext()) {
-            QString text = iterator.next();
-            loadMp3(&text);
-        }
-    }
-    */
-
     loadMp3(QFileDialog::getOpenFileName(
             this, tr("Open MP3 Files"),
             QDesktopServices::storageLocation(QDesktopServices::MusicLocation),
-            "MP3 Files (*.mp3)", 0, 0)
+            "MP3 Files (*.mp3)", 0)
     );
 }
 
@@ -107,8 +89,8 @@ void MainWindow::createMenu()
     actOpen = new QAction(this);
     actOpen->setShortcut(QKeySequence("Ctrl+O"));
 
-    actConvert = new QAction(this);
-    actConvert->setShortcut(QKeySequence("Ctrl+E"));
+    actSave = new QAction(this);
+    actSave->setShortcut(QKeySequence("Ctrl+S"));
 
     actClose = new QAction(this);
     actClose->setShortcut(QKeySequence("Ctrl+W"));
@@ -118,7 +100,7 @@ void MainWindow::createMenu()
 
     menuFile = menuBar()->addMenu("");
     menuFile->addAction(actOpen);
-    menuFile->addAction(actConvert);
+    menuFile->addAction(actSave);
     menuFile->addAction(actClose);
     menuFile->addSeparator();
     menuFile->addAction(actExit);
@@ -146,19 +128,19 @@ void MainWindow::createMenu()
     menuChiConv->addAction(actZhtToZhs);
 
     // menu help
-    actHelp = new QAction(this);
-    actHelp->setShortcut(QKeySequence("F1"));
+//    actHelp = new QAction(this);
+//    actHelp->setShortcut(QKeySequence("F1"));
     actAbout = new QAction(this);
 
     menuHelp = menuBar()->addMenu("");
-    menuHelp->addAction(actHelp);
+//    menuHelp->addAction(actHelp);
     menuHelp->addAction(actAbout);
 
     // signal and slot
     QObject::connect(actOpen, SIGNAL(triggered()), this, SLOT(openFile()));
     QObject::connect(actClose, SIGNAL(triggered()), this, SLOT(closeFile()));
     QObject::connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
-    QObject::connect(actHelp, SIGNAL(triggered()), this, SLOT(help()));
+//    QObject::connect(actHelp, SIGNAL(triggered()), this, SLOT(help()));
     QObject::connect(actAbout, SIGNAL(triggered()), this, SLOT(about()));
     QObject::connect(actEn, SIGNAL(triggered()), this, SLOT(changeLangEn()));
     QObject::connect(actZht, SIGNAL(triggered()), this, SLOT(changeLangZht()));
@@ -185,17 +167,22 @@ void MainWindow::initWidget()
     int row = 0;
 
     // row 0
-    btnOpen = new QPushButton(this);
-    btnConvert = new QPushButton(this);
-    btnClose = new QPushButton(this);
+    dropArea = new DropArea(QSize(380, 50), this);
+    dropArea->setText(tr("Drop MP3 here"));
+
     hLayout[row] = new QHBoxLayout();
-    hLayout[row]->addWidget(btnOpen);
-    hLayout[row]->addWidget(btnConvert);
-    hLayout[row]->addWidget(btnClose);
+    hLayout[row]->addWidget(dropArea);
 
     // row 1
-    lbl1 = getQLabel();
+    btnSave = new QPushButton(this);
+    btnClose = new QPushButton(this);
 
+    hLayout[++row] = new QHBoxLayout();
+    hLayout[row]->addWidget(btnSave);
+    hLayout[row]->addWidget(btnClose);
+
+    // row 2
+    lbl1 = getQLabel();
     cbEnc = new QComboBox(this);
     cbEnc->addItem("BIG5");
     cbEnc->addItem("BIG5-HKSCS");
@@ -206,7 +193,7 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl1);
     hLayout[row]->addWidget(cbEnc);
 
-    // row 2
+    // row 3
     lbl2 = getQLabel();
     editTitle = new QLineEdit(this);
 
@@ -214,7 +201,7 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl2);
     hLayout[row]->addWidget(editTitle);
 
-    // row 3
+    // row 4
     lbl3 = getQLabel();
     editArtist = new QLineEdit(this);
 
@@ -222,7 +209,7 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl3);
     hLayout[row]->addWidget(editArtist);
 
-    // row 4
+    // row 5
     lbl4 = getQLabel();
     editAlbum = new QLineEdit(this);
 
@@ -230,7 +217,7 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl4);
     hLayout[row]->addWidget(editAlbum);
 
-    // row 5
+    // row 6
     lbl5 = getQLabel();
     editGenre = new QLineEdit(this);
 
@@ -238,7 +225,7 @@ void MainWindow::initWidget()
     hLayout[row]->addWidget(lbl5);
     hLayout[row]->addWidget(editGenre);
 
-    // row 6
+    // row 7
     lbl6 = getQLabel();
     editComment = new QPlainTextEdit(this);
     MainWindow::setPlainTextHeight(editComment, NUM_OF_COMMENT_ROW);
@@ -246,12 +233,6 @@ void MainWindow::initWidget()
     hLayout[++row] = new QHBoxLayout();
     hLayout[row]->addWidget(lbl6);
     hLayout[row]->addWidget(editComment);
-
-    // row 7
-    dropArea = new DropArea(QSize(380, 50), this);
-    dropArea->setText(tr("Drop MP3 here"));
-    hLayout[++row] = new QHBoxLayout();
-    hLayout[row]->addWidget(dropArea);
 
     // vertical layout
     QVBoxLayout *vLayout = new QVBoxLayout();
@@ -264,8 +245,7 @@ void MainWindow::initWidget()
     updateInterface();
 
     // signal and slot
-    QObject::connect(btnOpen, SIGNAL(clicked()), this, SLOT(openFile()));
-    QObject::connect(btnConvert, SIGNAL(clicked()), this, SLOT(convertMp3()));
+    QObject::connect(btnSave, SIGNAL(clicked()), this, SLOT(convertMp3()));
     QObject::connect(btnClose, SIGNAL(clicked()), this, SLOT(closeFile()));
     QObject::connect(cbEnc, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(reloadEncoding(const QString &)));
     QObject::connect(dropArea, SIGNAL(dropped(const QList<QUrl>)), this, SLOT(droppedFiles(const QList<QUrl>)));
@@ -297,7 +277,7 @@ void MainWindow::updateInterface()
     // menu
     menuFile->setTitle(tr("&File"));
     actOpen->setText(tr("Open"));
-    actConvert->setText(tr("Convert ID3 Tag"));
+    actSave->setText(tr("Convert and Save"));
     actClose->setText(tr("Close"));
     actExit->setText(tr("E&xit"));
     actEn->setText(tr("&English"));
@@ -307,13 +287,12 @@ void MainWindow::updateInterface()
     actZhsToZht->setText(tr("&Simplified Chinese to Traditional"));
     actZhtToZhs->setText(tr("&Traditional Chinese to Simplified"));
     menuChiConv->setTitle(tr("&Chinese Convert"));
-    actHelp->setText(tr("&Help"));
+//    actHelp->setText(tr("&Help"));
     actAbout->setText(tr("&About"));
     menuHelp->setTitle(tr("&Help"));
 
     // buttons
-    btnOpen->setText(tr("Open"));
-    btnConvert->setText(tr("Convert ID3 Tag"));
+    btnSave->setText(tr("Convert and Save"));
     btnClose->setText(tr("Close"));
 
     // labels
@@ -326,6 +305,9 @@ void MainWindow::updateInterface()
 
     // status bar
 //	statusBar()->showMessage("");
+
+    // drop area
+    dropArea->setText(tr("Drop MP3 here"));
 }
 
 void MainWindow::loadMp3(QString mp3FilePath)
@@ -348,14 +330,9 @@ void MainWindow::loadMp3(QString mp3FilePath)
     strcpy(data, ba.constData());
 #endif
 
+    closeFile();
+
     statusBar()->showMessage(mp3FilePath);
-
-    if (tc != NULL)
-        delete tc;
-
-    if (mp3File != NULL)
-        delete mp3File;
-
     mp3File = new TagLib::FileRef(data);
     tc = new TagConvertor(mp3File);
     readMp3Info();
@@ -525,4 +502,5 @@ void MainWindow::reloadEncoding(const QString &text)
 
 //	std::cout << "reload encoding: " << text.toStdString() << std::endl;
     readMp3Info(text.toAscii().data());
+}
 }

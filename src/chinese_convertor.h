@@ -23,6 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "opencc/opencc.h"
 #include "encoding_convertor.h"
 
+namespace Mp3Id3EncCov
+{
 #define CONFIG_ZHS_TO_ZHT "zhs2zht.ini"
 #define CONFIG_ZHT_TO_ZHS "zht2zhs.ini"
 
@@ -38,5 +40,5 @@ public:
 	QString convert(QString src) const;
 
 };
-
+}
 #endif // CHINESE_CONVERTOR_H

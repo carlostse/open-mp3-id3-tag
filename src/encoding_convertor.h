@@ -25,22 +25,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QTextCodec>
 //#include "iconv/iconv.h"
 
+namespace Mp3Id3EncCov
+{
 class EncodingConvertor
 {
 
 private:
-	const char *_fromCharset;
-//	const char *_toCharset;
-//	iconv_t conv;
+    const char *_fromCharset;
+//    const char *_toCharset;
+//    iconv_t conv;
 
 public:
-	EncodingConvertor(const char* fromCharset/*, const char* toCharset*/);
-	virtual ~EncodingConvertor();
+    EncodingConvertor(const char* fromCharset/*, const char* toCharset*/);
+    virtual ~EncodingConvertor();
 
-	static void debugHex(const char *header, const char *content);
+    static void debugHex(const char *header, const char *content);
 
-	QString convert(const char *input) const;
-	//char *convert(const char *input) const;
+    QString convert(const char *input) const;
+//    char *convert(const char *input) const;
 };
-
+}
 #endif // ENCODING_CONVERTOR_H

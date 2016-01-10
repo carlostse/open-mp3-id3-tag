@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "tag_convertor.h"
 
+namespace Mp3Id3EncCov
+{
 TagConvertor::TagConvertor(TagLib::FileRef *mp3File)
 {
     this->mp3File = mp3File;
@@ -72,18 +74,18 @@ void TagConvertor::load(const char *manualEncoding)
             _genre + _comment;
 
         const char *src = all.toCString(TagConvertor::isUtf8Tag(all));
-//		cout << "src: " << src << endl;
+//        std::cout << "src: " << src << std::endl;
 
         uchardet_t ud = uchardet_new();
         uchardet_handle_data(ud, src, strlen(src));
         uchardet_data_end(ud);
 
         strcpy(_encoding, uchardet_get_charset(ud));
-        cout << "auto encoding: " << _encoding << endl;
+        std::cout << "auto encoding: " << _encoding << std::endl;
         uchardet_delete(ud);
 
     } else {
-        cout << "manual encoding: " << manualEncoding << endl;
+        std::cout << "manual encoding: " << manualEncoding << std::endl;
         strcpy(_encoding, manualEncoding);
     }
 
@@ -95,14 +97,14 @@ void TagConvertor::load(const char *manualEncoding)
 
     // convert to UTF-8 for display in GUI and save
     if (_encoding != NULL && strlen(_encoding) > 0 && strcmp(_encoding, "UTF-8") != 0){
-        cout << "converting " << _encoding << " to UTF8..." << endl;
+        std::cout << "converting " << _encoding << " to UTF8..." << std::endl;
         EncodingConvertor *conv = new EncodingConvertor(_encoding/*, "UTF-8"*/);
 
-//		_utf8Title->append(QString::fromUtf8(conv->convert((char *) _title.toCString())));
-//		_utf8Artist->append(QString::fromUtf8(conv->convert((char *) _artist.toCString())));
-//		_utf8Album->append(QString::fromUtf8(conv->convert((char *) _album.toCString())));
-//		_utf8Genre->append(QString::fromUtf8(conv->convert((char *) _genre.toCString())));
-//		_utf8Comment->append(QString::fromUtf8(conv->convert((char *) _comment.toCString())));
+//        _utf8Title->append(QString::fromUtf8(conv->convert((char *) _title.toCString())));
+//        _utf8Artist->append(QString::fromUtf8(conv->convert((char *) _artist.toCString())));
+//        _utf8Album->append(QString::fromUtf8(conv->convert((char *) _album.toCString())));
+//        _utf8Genre->append(QString::fromUtf8(conv->convert((char *) _genre.toCString())));
+//        _utf8Comment->append(QString::fromUtf8(conv->convert((char *) _comment.toCString())));
 
         _utf8Title->append(conv->convert((char *) _title.toCString()));
         _utf8Artist->append(conv->convert((char *) _artist.toCString()));
@@ -111,10 +113,10 @@ void TagConvertor::load(const char *manualEncoding)
         _utf8Comment->append(conv->convert((char *) _comment.toCString()));
 
         delete conv;
-        cout << "converted" << endl;
+        std::cout << "converted" << std::endl;
 
     } else {
-        cout << "copy to utf8..." << endl;
+        std::cout << "copy to utf8..." << std::endl;
         _utf8Title->append(QString::fromUtf8(_title.toCString(true)));
         _utf8Artist->append(QString::fromUtf8(_artist.toCString(true)));
         _utf8Album->append(QString::fromUtf8(_album.toCString(true)));
@@ -126,7 +128,7 @@ void TagConvertor::load(const char *manualEncoding)
 bool TagConvertor::convert()
 {
     if (mp3File == NULL || mp3File->isNull() || mp3File->tag() == NULL){
-        cout << "nothing to save..." << endl;
+        std::cout << "nothing to save..." << std::endl;
         return false;
     }
 
@@ -142,7 +144,7 @@ bool TagConvertor::convert()
 bool TagConvertor::save() const
 {
     if (mp3File->isNull()){
-        cout << "mp3 file is null" << endl;
+        std::cout << "mp3 file is null" << std::endl;
         return false;
     }
 
@@ -232,4 +234,5 @@ void TagConvertor::setUtf8Comment(QString qs)
 {
     _utf8Comment->clear();
     _utf8Comment->append(qs);
+}
 }

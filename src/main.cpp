@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     strcpy(PKGDATADIR, path.toLocal8Bit().data());
     std::cout << PKGDATADIR << std::endl;
 
-    MainWindow w;
+    Mp3Id3EncCov::MainWindow w;
     w.show();
 
     return a.exec();

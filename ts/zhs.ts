@@ -2,16 +2,44 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="zh_CN">
 <context>
-    <name>MainWindow</name>
+    <name>Mp3Id3EncCov::MainWindow</name>
     <message>
-        <location filename="../src/main_window.cpp" line="282"/>
-        <source>E&amp;xit</source>
-        <translation>退出</translation>
+        <location filename="../src/main_window.cpp" line="68"/>
+        <source>Open MP3 Files</source>
+        <translation>打开 MP3 文件</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window.cpp" line="171"/>
+        <location filename="../src/main_window.cpp" line="310"/>
+        <source>Drop MP3 here</source>
+        <translation>拖放 MP3 到这里</translation>
     </message>
     <message>
         <location filename="../src/main_window.cpp" line="278"/>
         <source>&amp;File</source>
         <translation>文件</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window.cpp" line="279"/>
+        <source>Open</source>
+        <translation>打开</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window.cpp" line="280"/>
+        <location filename="../src/main_window.cpp" line="295"/>
+        <source>Convert and Save</source>
+        <translation>转换及保存</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window.cpp" line="281"/>
+        <location filename="../src/main_window.cpp" line="296"/>
+        <source>Close</source>
+        <translation>关闭文件</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window.cpp" line="282"/>
+        <source>E&amp;xit</source>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../src/main_window.cpp" line="283"/>
@@ -27,10 +55,6 @@
         <location filename="../src/main_window.cpp" line="285"/>
         <source>&amp;Simplified Chinese</source>
         <translation>简体中文</translation>
-    </message>
-    <message>
-        <source>&amp;Setting</source>
-        <translation type="obsolete">设定</translation>
     </message>
     <message>
         <location filename="../src/main_window.cpp" line="286"/>
@@ -53,105 +77,78 @@
         <translation>中文转换</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="290"/>
-        <location filename="../src/main_window.cpp" line="292"/>
-        <source>&amp;Help</source>
-        <translation>帮助</translation>
-    </message>
-    <message>
         <location filename="../src/main_window.cpp" line="291"/>
         <source>&amp;About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="279"/>
-        <location filename="../src/main_window.cpp" line="295"/>
-        <source>Open</source>
-        <translation>开启</translation>
+        <location filename="../src/main_window.cpp" line="292"/>
+        <source>&amp;Help</source>
+        <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="280"/>
-        <location filename="../src/main_window.cpp" line="296"/>
-        <source>Convert ID3 Tag</source>
-        <translation>转换 ID3 标签</translation>
-    </message>
-    <message>
-        <source>Source Encoding: </source>
-        <translation type="obsolete">来源编码：</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window.cpp" line="301"/>
-        <source>Title: </source>
-        <translation>歌曲名称：</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window.cpp" line="300"/>
+        <location filename="../src/main_window.cpp" line="299"/>
         <source>Encoding: </source>
         <translation>编码：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="86"/>
-        <source>Open MP3 Files</source>
-        <translation type="unfinished">开启 MP3 文件</translation>
+        <location filename="../src/main_window.cpp" line="300"/>
+        <source>Title: </source>
+        <translation>歌曲名称：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="281"/>
-        <location filename="../src/main_window.cpp" line="297"/>
-        <source>Close</source>
-        <translation>关闭文件</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window.cpp" line="302"/>
+        <location filename="../src/main_window.cpp" line="301"/>
         <source>Artist: </source>
         <translation>歌手：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="303"/>
+        <location filename="../src/main_window.cpp" line="302"/>
         <source>Album: </source>
         <translation>专辑：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="304"/>
+        <location filename="../src/main_window.cpp" line="303"/>
         <source>Genre: </source>
         <translation>类型：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="305"/>
+        <location filename="../src/main_window.cpp" line="304"/>
         <source>Comment: </source>
         <translation>备注：</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="404"/>
+        <location filename="../src/main_window.cpp" line="406"/>
         <source>Save</source>
-        <translation>储存</translation>
+        <translation>保存</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="405"/>
+        <location filename="../src/main_window.cpp" line="407"/>
         <source>Saved</source>
         <translation>储存成功</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="405"/>
+        <location filename="../src/main_window.cpp" line="407"/>
         <source>Save Failed</source>
         <translation>储存失败</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="437"/>
+        <location filename="../src/main_window.cpp" line="439"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="438"/>
+        <location filename="../src/main_window.cpp" line="440"/>
         <source>Working in Process</source>
-        <translation type="unfinished"></translation>
+		<translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="445"/>
+        <location filename="../src/main_window.cpp" line="447"/>
         <source>MP3 ID3 Tag Encoding Converter </source>
         <translation>MP3 ID3 标签编码转换</translation>
     </message>
     <message>
-        <location filename="../src/main_window.cpp" line="452"/>
+        <location filename="../src/main_window.cpp" line="454"/>
         <source>About</source>
         <translation>关于</translation>
     </message>

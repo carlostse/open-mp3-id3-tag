@@ -26,45 +26,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <taglib/tag.h>
 #include "encoding_convertor.h"
 
-using std::cout;
-using std::endl;
-
+namespace Mp3Id3EncCov
+{
 #define ENCODING_LEN 30
 
 class TagConvertor
 {
 private:
-	TagLib::FileRef *mp3File;
-	TagLib::String _title, _artist, _album, _genre, _comment;
+    TagLib::FileRef *mp3File;
+    TagLib::String _title, _artist, _album, _genre, _comment;
 
-	char *_encoding;
-	QString *_utf8Title, *_utf8Artist, *_utf8Album, *_utf8Genre, *_utf8Comment;
+    char *_encoding;
+    QString *_utf8Title, *_utf8Artist, *_utf8Album, *_utf8Genre, *_utf8Comment;
 
 public:
-	TagConvertor(TagLib::FileRef *mp3File);
-	~TagConvertor();
+    TagConvertor(TagLib::FileRef *mp3File);
+    ~TagConvertor();
 
-	static bool isUtf8Tag(const TagLib::String str);
+    static bool isUtf8Tag(const TagLib::String str);
 
-	void load(const char *manualEncoding = NULL);
-	bool convert();
-	bool save() const;
-	const char *encoding() const;
-	const TagLib::String title() const;
-	const TagLib::String artist() const;
-	const TagLib::String album() const;
-	const TagLib::String genre() const;
-	const TagLib::String comment() const;
-	QString *utf8Title() const;
-	QString *utf8Artist() const;
-	QString *utf8Album() const;
-	QString *utf8Genre() const;
-	QString *utf8Comment() const;
-	void setUtf8Title(QString);
-	void setUtf8Artist(QString);
-	void setUtf8Album(QString);
-	void setUtf8Genre(QString);
-	void setUtf8Comment(QString);
+    void load(const char *manualEncoding = NULL);
+    bool convert();
+    bool save() const;
+    const char *encoding() const;
+    const TagLib::String title() const;
+    const TagLib::String artist() const;
+    const TagLib::String album() const;
+    const TagLib::String genre() const;
+    const TagLib::String comment() const;
+    QString *utf8Title() const;
+    QString *utf8Artist() const;
+    QString *utf8Album() const;
+    QString *utf8Genre() const;
+    QString *utf8Comment() const;
+    void setUtf8Title(QString);
+    void setUtf8Artist(QString);
+    void setUtf8Album(QString);
+    void setUtf8Genre(QString);
+    void setUtf8Comment(QString);
 };
-
+}
 #endif // TAG_CONVERTOR_H

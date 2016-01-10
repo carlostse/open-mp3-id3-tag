@@ -19,7 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef COMMON_H
 #define COMMON_H
 
-#define VERSION "0.0.6"
+#define VERSION "0.1.0"
 #define WIN_ICON QIcon(":/icon")
+
+#ifdef __cplusplus
+namespace Mp3Id3EncCov
+{
+enum Language {ENG, ZHT, ZHS};
+}
+#endif
 
 #endif // COMMON_H

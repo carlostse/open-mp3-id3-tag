@@ -43,6 +43,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "chinese_convertor.h"
 #include "drop_area.h"
 
+namespace Mp3Id3EncCov
+{
 #define NUM_OF_WIN_ROW 8
 #define NUM_OF_COMMENT_ROW 5
 #ifdef Q_OS_MAC
@@ -55,58 +57,57 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	bool disableComboxSignal;
-	TagConvertor *tc;
-	TagLib::FileRef *mp3File;
+    bool disableComboxSignal;
+    TagConvertor *tc;
+    TagLib::FileRef *mp3File;
 
-	QComboBox *cbEnc;
-	QPushButton *btnOpen, *btnConvert, *btnClose;
-	QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
-	QPlainTextEdit *editComment;
+    QComboBox *cbEnc;
+    QPushButton *btnSave, *btnClose;
+    QLineEdit *editTitle, *editArtist, *editAlbum, *editGenre;
+    QPlainTextEdit *editComment;
     DropArea *dropArea;
 
-	QMenu *menuFile, *menuInterface, *menuChiConv, *menuHelp;
-	QAction *actOpen, *actConvert, *actClose, *actExit,
-			*actEn, *actZht, *actZhs,
-			*actZhsToZht, *actZhtToZhs,
-			*actHelp, *actAbout;
-	QLabel *lbl1, *lbl2, *lbl3, *lbl4, *lbl5, *lbl6;
+    QMenu *menuFile, *menuInterface, *menuChiConv, *menuHelp;
+    QAction *actOpen, *actSave, *actClose, *actExit,
+            *actEn, *actZht, *actZhs,
+            *actZhsToZht, *actZhtToZhs,
+            /**actHelp,*/ *actAbout;
+    QLabel *lbl1, *lbl2, *lbl3, *lbl4, *lbl5, *lbl6;
 
-	QTranslator *trans;
-	enum Language {ENG, ZHT, ZHS};
-	Language language;
+    QTranslator *trans;
+    Language language;
 
-	QLabel* getQLabel();
-	void updateLangCheckbox();
-	void updateInterface();
+    QLabel* getQLabel();
+    void updateLangCheckbox();
+    void updateInterface();
 
-	void createMenu();
-	void initWidget();
-	void loadMp3(QString mp3FilePath);
-	void setText();
-	void readMp3Info(const char *encoding = NULL);
-	static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
+    void createMenu();
+    void initWidget();
+    void loadMp3(QString mp3FilePath);
+    void setText();
+    void readMp3Info(const char *encoding = NULL);
+    static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
 
 public:
-	MainWindow(QWidget *parent = 0);
-	virtual ~MainWindow();
+    MainWindow(QWidget *parent = 0);
+    virtual ~MainWindow();
 
 public slots:
-	void openFile();
+    void openFile();
     void droppedFiles(const QList<QUrl>);
-	void convertMp3();
-	void closeFile();
-	void help();
-	void about();
-	void changeLangEn();
-	void changeLangZht();
-	void changeLangZhs();
-	void convertToZht();
-	void convertToZhs();
-	void reloadEncoding(const QString &);
+    void convertMp3();
+    void closeFile();
+    void help();
+    void about();
+    void changeLangEn();
+    void changeLangZht();
+    void changeLangZhs();
+    void convertToZht();
+    void convertToZhs();
+    void reloadEncoding(const QString &);
 };
-
+}
 #endif // MAIN_WINDOW_H

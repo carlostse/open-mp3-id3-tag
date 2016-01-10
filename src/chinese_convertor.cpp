@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "chinese_convertor.h"
 
+namespace Mp3Id3EncCov
+{
 ChineseConvertor::ChineseConvertor(const char *config)
 {
     opencc = opencc_open(config);
@@ -44,4 +46,5 @@ QString ChineseConvertor::convert(QString src) const
     QString result = QString::fromUtf8(buffOut);
     delete[] buffOut;
     return result;
+}
 }
