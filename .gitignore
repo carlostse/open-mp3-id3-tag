@@ -1,6 +1,7 @@
 debug/*
 release/*
 build/*
+lib/*.a
 Makefile*
 *.exe
 *.app/*
@@ -11,4 +12,4 @@ qrc_*.cpp
 moc_*.cpp
 object_script.*
 .DS_Store
-lib/*.a
+.qmake.stash

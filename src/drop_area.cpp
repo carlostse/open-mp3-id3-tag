@@ -14,6 +14,7 @@
  */
 
 #include "drop_area.h"
+#include <QMimeData>
 
 DropArea::DropArea(const QSize &s, QWidget *parent)
     : QLabel(parent)

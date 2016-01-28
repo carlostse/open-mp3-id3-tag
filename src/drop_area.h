@@ -16,7 +16,8 @@
 #ifndef DROPAREA_H
 #define DROPAREA_H
 
-#include <QtGui>
+#include <QLabel>
+#include <QDragEnterEvent>
 
 class DropArea : public QLabel
 {

@@ -1,6 +1,32 @@
+#-------------------------------------------------
+#
+# Open MP3 ID3 Tag
+#
+# Author: Carlos Tse
+# Email: copperoxide@gmail.com
+# Date: 28 JAN 2016
+#-------------------------------------------------
+
 QT = core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = open_mp3_id3_tag
 TEMPLATE = app
+
+CONFIG(debug, debug|release) {
+    message(Debug build)
+    DESTDIR = debug
+} else {
+    message(Release build)
+    DESTDIR = release
+}
+OBJECTS_DIR = $$DESTDIR/.obj
+MOC_DIR = $$DESTDIR/.moc
+RCC_DIR = $$DESTDIR/.qrc
+UI_DIR = $$DESTDIR/.ui
+
+QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
+QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
+QMAKE_CXXFLAGS_RELEASE += -O2
 
 HEADERS += \
     src/opencc/opencc.h \
@@ -42,33 +68,24 @@ SOURCES += \
 
 FORMS +=
 
-INCLUDEPATH += ../uchardet-0.0.5/src \
+INCLUDEPATH += ../uchardet/src \
     ../taglib-1.9.1/ \
     ../taglib-1.9.1/taglib \
     ../taglib-1.9.1/taglib/toolkit
 
 LIBS += -L../taglib-1.9.1/taglib -ltag \
-    -L../uchardet-0.0.5/src -luchardet
+    -L../uchardet/src -luchardet
 
 RESOURCES = mp3id3_encoding_conv.qrc
 
 TRANSLATIONS = ts/zhs.ts ts/zht.ts
-
-CONFIG(debug, debug|release) {
-    message(Debug build)
-    DESTDIR = ./
-    OBJECTS_DIR = debug/obj
-} else {
-    message(Release build)
-    DESTDIR = ./
-    OBJECTS_DIR = release/obj
-}
 
 win32 {
     RC_FILE = mp3id3_encoding_conv.rc
 }
 
 macx {
+    QMAKE_CXXFLAGS += -Winconsistent-missing-override
     ICON = icon.icns
     QTPLUGIN += qtwcodecs qcncodecs
 }

@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
+#include <QtDebug>
+#include <QtPlugin>
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#endif
 #include "main_window.h"
 
 namespace Mp3Id3EncCov
 {
-#ifdef Q_OS_UNIX
-#include <QtPlugin>
-Q_IMPORT_PLUGIN(qtwcodecs)
-Q_IMPORT_PLUGIN(qcncodecs)
-#endif
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
@@ -63,7 +63,11 @@ void MainWindow::openFile()
 {
     loadMp3(QFileDialog::getOpenFileName(
             this, tr("Open MP3 Files"),
+#if QT_VERSION >= 0x050000
+            QStandardPaths::writableLocation(QStandardPaths::MusicLocation),
+#else
             QDesktopServices::storageLocation(QDesktopServices::MusicLocation),
+#endif
             "MP3 Files (*.mp3)", 0)
     );
 }
@@ -322,7 +326,7 @@ void MainWindow::loadMp3(QString mp3FilePath)
     data[len] = '\0';
     mp3FilePath.replace("/", "\\");
 #else
-    QByteArray ba = QFile::encodeName(*mp3FilePath).constData();
+    QByteArray ba = QFile::encodeName(mp3FilePath);
     char *data = new char[ba.length() + 1];
     strcpy(data, ba.constData());
 #endif
@@ -392,7 +396,7 @@ void MainWindow::convertMp3()
     tc->setUtf8Comment(editComment->toPlainText());
 
     bool success = tc->convert() && tc->save();
-    std::cout << "save success: " << success << "endl" << endl;
+    std::cout << "save success: " << success << "endl" << std::endl;
     QMessageBox msgBox;
     msgBox.setWindowIcon(WIN_ICON);
     msgBox.setWindowTitle(tr("Save"));
@@ -497,7 +501,8 @@ void MainWindow::reloadEncoding(const QString &text)
     if (disableComboxSignal)
         return;
 
-//	std::cout << "reload encoding: " << text.toStdString() << std::endl;
-    readMp3Info(text.toAscii().data());
+    std::string encoding = text.toStdString();
+//	std::cout << "reload encoding: " << encoding << std::endl;
+    readMp3Info(encoding.c_str());
 }
 }
