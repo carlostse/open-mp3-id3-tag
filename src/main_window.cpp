@@ -77,9 +77,13 @@ void MainWindow::droppedFiles(const QList<QUrl> list)
     if (list.size() < 1)
         return;
 
-    QString url = list.at(0).path(),
-            fileName = url.mid(0, url.length());
-
+    QString url = list.at(0).path(), fileName;
+    // the url starts with /
+#ifdef Q_OS_WIN
+    fileName = url.mid(1, url.length());
+#else
+    fileName = url.mid(0, url.length());
+#endif
 //    qDebug() << "file: " << fileName;
     loadMp3(fileName);
 }
@@ -322,14 +326,13 @@ void MainWindow::loadMp3(QString mp3FilePath)
 
 #ifdef Q_OS_WIN
     std::cout << "use wchar_t for file name" << std::endl;
-    wchar_t *data = new wchar_t[mp3FilePath.length() + 4]();
-    int len = mp3FilePath.toWCharArray(data);
-    mp3FilePath.replace("/", "\\");
+    wchar_t *data = new wchar_t[mp3FilePath.length() + sizeof(wchar_t)]();
+    mp3FilePath.toWCharArray(data);
     std::wcout << L"load mp3: " << data << std::endl;
 #else
     std::cout << "use char for file name" << std::endl;
     QByteArray ba = QFile::encodeName(mp3FilePath);
-    char *data = new char[ba.length() + 1]();
+    char *data = new char[ba.length() + sizeof(char)]();
     strcpy(data, ba.constData());
     std::cout << "load mp3: " << data << std::endl;
 #endif
@@ -444,8 +447,8 @@ void MainWindow::about()
 {
     QString t = tr("MP3 ID3 Tag Encoding Converter ");
     t.append(VERSION);
-    t.append("\n");
-    t.append("By Carlos Tse <copperoxide@gmail.com>");
+    t.append("\n\nBy Carlos Tse <copperoxide@gmail.com>\n\n");
+    t.append("Licensed under the Apache License, Version 2.0\n");
 
     QMessageBox msgBox;
     msgBox.setWindowIcon(WIN_ICON);

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "tag_convertor.h"
 
 namespace Mp3Id3EncCov
@@ -49,11 +50,11 @@ void TagConvertor::load(const char *manualEncoding)
 
     TagLib::Tag *tag = mp3File->tag();
 
-//	cout << "title   - " << tag->title()   << endl;
-//	cout << "artist  - " << tag->artist()  << endl;
-//	cout << "album   - " << tag->album()   << endl;
-//	cout << "genre   - " << tag->genre()   << endl;
-//	cout << "comment - " << tag->comment() << endl;
+//    std::cout << "title   - " << tag->title()   << "\n" <<
+//                 "artist  - " << tag->artist()  << "\n" <<
+//                 "album   - " << tag->album()   << "\n" <<
+//                 "genre   - " << tag->genre()   << "\n" <<
+//                 "comment - " << tag->comment() << std::endl;
 
     _title = tag->title();
     _artist = tag->artist();
