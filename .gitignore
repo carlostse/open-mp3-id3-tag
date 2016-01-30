@@ -7,7 +7,6 @@ Makefile*
 *.app/*
 *.pro.user
 *.qm
-*.ocd
 qrc_*.cpp
 moc_*.cpp
 object_script.*

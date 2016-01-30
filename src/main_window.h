@@ -45,7 +45,7 @@ namespace Mp3Id3EncCov
 #define NUM_OF_WIN_ROW 8
 #define NUM_OF_COMMENT_ROW 5
 #ifdef Q_OS_MAC
-#define MIN_SIZE 380, 330
+#define MIN_SIZE 380, 400
 #else
 #define MIN_SIZE 380, 290
 #endif

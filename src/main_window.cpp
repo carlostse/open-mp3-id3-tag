@@ -78,9 +78,9 @@ void MainWindow::droppedFiles(const QList<QUrl> list)
         return;
 
     QString url = list.at(0).path(),
-            fileName = url.mid(1, url.length() - 1);
+            fileName = url.mid(0, url.length());
 
-    qDebug() << "file: " << fileName;
+//    qDebug() << "file: " << fileName;
     loadMp3(fileName);
 }
 
@@ -318,20 +318,21 @@ void MainWindow::loadMp3(QString mp3FilePath)
         return;
     }
 
-    std::cout << "loadMp3: " << mp3FilePath.toLocal8Bit().data() << std::endl;
+    closeFile();
 
 #ifdef Q_OS_WIN
-    wchar_t *data = new wchar_t[mp3FilePath.length() + 4];
+    std::cout << "use wchar_t for file name" << std::endl;
+    wchar_t *data = new wchar_t[mp3FilePath.length() + 4]();
     int len = mp3FilePath.toWCharArray(data);
-    data[len] = '\0';
     mp3FilePath.replace("/", "\\");
+    std::wcout << L"load mp3: " << data << std::endl;
 #else
+    std::cout << "use char for file name" << std::endl;
     QByteArray ba = QFile::encodeName(mp3FilePath);
-    char *data = new char[ba.length() + 1];
+    char *data = new char[ba.length() + 1]();
     strcpy(data, ba.constData());
+    std::cout << "load mp3: " << data << std::endl;
 #endif
-
-    closeFile();
 
     statusBar()->showMessage(mp3FilePath);
     mp3File = new TagLib::FileRef(data);
@@ -423,6 +424,7 @@ void MainWindow::closeFile()
     }
 
     if (mp3File != NULL){
+        std::cout << "close mp3 file" << std::endl;
         delete mp3File;
         mp3File = NULL;
     }
