@@ -12,3 +12,8 @@ moc_*.cpp
 object_script.*
 .DS_Store
 .qmake.stash
+msvc/Win32/
+msvc/*.suo
+msvc/*.vcxproj.user
+msvc/*.sdf
+msvc/*.opensdf

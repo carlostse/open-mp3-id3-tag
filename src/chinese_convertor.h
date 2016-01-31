@@ -17,24 +17,24 @@
 #define CHINESE_CONVERTOR_H
 
 #include <QString>
-#include "opencc/opencc.h"
+#include <opencc.h>
 #include "encoding_convertor.h"
 
 namespace Mp3Id3EncCov
 {
-#define CONFIG_ZHS_TO_ZHT "zhs2zht.ini"
-#define CONFIG_ZHT_TO_ZHS "zht2zhs.ini"
+#define CONFIG_ZHS_TO_ZHT OPENCC_DEFAULT_CONFIG_SIMP_TO_TRAD
+#define CONFIG_ZHT_TO_ZHS OPENCC_DEFAULT_CONFIG_TRAD_TO_SIMP
 
 class ChineseConvertor
 {
 private:
-	opencc_t opencc;
+    opencc_t opencc;
 
 public:
-	ChineseConvertor(const char *config);
-	~ChineseConvertor();
+    ChineseConvertor(const char *config);
+    ~ChineseConvertor();
 
-	QString convert(QString src) const;
+    QString convert(QString src) const;
 
 };
 }

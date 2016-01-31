@@ -22,7 +22,6 @@
 
 namespace Mp3Id3EncCov
 {
-
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
     tc = NULL;

@@ -16,7 +16,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define VERSION "0.1.1"
+#define VERSION "0.5.0"
 #define WIN_ICON QIcon(":/icon")
 
 #ifdef __cplusplus
