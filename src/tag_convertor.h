@@ -30,21 +30,26 @@ namespace Mp3Id3EncCov
 class TagConvertor
 {
 private:
-    TagLib::FileRef *mp3File;
+    TagLib::FileRef *_mp3File;
     TagLib::String _title, _artist, _album, _genre, _comment;
 
     char *_encoding;
     QString *_utf8Title, *_utf8Artist, *_utf8Album, *_utf8Genre, *_utf8Comment;
 
+    void init();
+
 public:
-    TagConvertor(TagLib::FileRef *mp3File);
+    TagConvertor(const wchar_t *file);
+    TagConvertor(const char *file);
     ~TagConvertor();
 
-    static bool isUtf8Tag(const TagLib::String str);
+    static bool is_utf8_tag(const TagLib::String);
+    bool is_missing_mp3_file() const;
 
     void load(const char *manualEncoding = NULL);
     bool convert();
     bool save() const;
+    const TagLib::FileRef *mp3File() const;
     const char *encoding() const;
     const TagLib::String title() const;
     const TagLib::String artist() const;

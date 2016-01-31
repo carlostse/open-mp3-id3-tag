@@ -33,8 +33,6 @@
 #include <QLocale>
 #include <QStatusBar>
 #include <QComboBox>
-#include "taglib/fileref.h"
-#include "taglib/tag.h"
 #include "common.h"
 #include "tag_convertor.h"
 #include "chinese_convertor.h"
@@ -59,7 +57,6 @@ class MainWindow : public QMainWindow
 private:
     bool disableComboxSignal;
     TagConvertor *tc;
-    TagLib::FileRef *mp3File;
 
     QComboBox *cbEnc;
     QPushButton *btnSave, *btnClose;

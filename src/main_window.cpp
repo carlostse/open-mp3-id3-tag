@@ -26,7 +26,6 @@ namespace Mp3Id3EncCov
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
     tc = NULL;
-    mp3File = NULL;
 
     // icon
     setWindowIcon(WIN_ICON);
@@ -48,7 +47,14 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 
 MainWindow::~MainWindow()
 {
-    delete trans;
+    if (tc) {
+        delete tc;
+        tc = nullptr;
+    }
+    if (trans) {
+        delete trans;
+        trans = nullptr;
+    }
 }
 
 QLabel* MainWindow::getQLabel()
@@ -338,8 +344,7 @@ void MainWindow::loadMp3(QString mp3FilePath)
 #endif
 
     statusBar()->showMessage(mp3FilePath);
-    mp3File = new TagLib::FileRef(data);
-    tc = new TagConvertor(mp3File);
+    tc = new TagConvertor(data);
     readMp3Info();
     delete[] data;
 }
@@ -390,7 +395,7 @@ void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
 
 void MainWindow::convertMp3()
 {
-    if (tc == NULL || mp3File == NULL || mp3File->isNull())
+    if (tc == NULL || tc->is_missing_mp3_file())
         return;
 
     tc->setUtf8Title(editTitle->text());
@@ -421,15 +426,10 @@ void MainWindow::closeFile()
     editGenre->setText(NULL);
     editComment->setPlainText(NULL);
 
-    if (tc != NULL){
-        delete tc;
-        tc = NULL;
-    }
-
-    if (mp3File != NULL){
+    if (tc){
         std::cout << "close mp3 file" << std::endl;
-        delete mp3File;
-        mp3File = NULL;
+        delete tc;
+        tc = nullptr;
     }
 }
 

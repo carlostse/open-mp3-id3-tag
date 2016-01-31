@@ -36,9 +36,11 @@ EncodingConvertor::EncodingConvertor(const char* fromCharset/*, const char* toCh
 
 EncodingConvertor::~EncodingConvertor()
 {
-//	if (errno != 0 && iconv_close(conv) != 0) {
-//		printf("iconv_close failed: %s\n", strerror(errno));
-//	}
+    /*
+    if (errno != 0 && iconv_close(conv) != 0) {
+        printf("iconv_close failed: %s\n", strerror(errno));
+    }
+    */
 }
 
 void EncodingConvertor::debugHex(const char *header, const char *content)
@@ -79,7 +81,7 @@ char *EncodingConvertor::convert(const char *input) const
 
     // we allocate 4 bytes more than what we need for nul-termination...
     if (!(output = (char *) malloc(outlen + 4))) {
-//		iconv_close(cd);
+        iconv_close(cd);
         return NULL;
     }
 
@@ -98,7 +100,7 @@ char *EncodingConvertor::convert(const char *input) const
         if (errno != E2BIG) {
             // An invalid multibyte sequence has been encountered in the input.
             // Bad input, we can't really recover from this.
-//			iconv_close(cd);
+            iconv_close(cd);
             free(output);
             return NULL;
         }
@@ -109,7 +111,7 @@ char *EncodingConvertor::convert(const char *input) const
         outlen += inleft * 2 + 8;
 
         if (!(tmp = (char *) realloc(output, outlen + 4))) {
-//			iconv_close(cd);
+            iconv_close(cd);
             free(output);
             return NULL;
         }
@@ -120,7 +122,7 @@ char *EncodingConvertor::convert(const char *input) const
 
     // flush the iconv conversion
     iconv(conv, NULL, NULL, &outbuf, &outleft);
-//	iconv_close(cd);
+    iconv_close(cd);
 
     // Note: not all charsets can be nul-terminated with a single nul byte.
     // UCS2, for example, needs 2 nul bytes and

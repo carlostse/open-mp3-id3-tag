@@ -17,9 +17,20 @@
 
 namespace Mp3Id3EncCov
 {
-TagConvertor::TagConvertor(TagLib::FileRef *mp3File)
+TagConvertor::TagConvertor(const wchar_t *file)
 {
-    this->mp3File = mp3File;
+    _mp3File = new TagLib::FileRef(TagLib::FileName(file));
+    init();
+}
+
+TagConvertor::TagConvertor(const char *file)
+{
+    _mp3File = new TagLib::FileRef(TagLib::FileName(file));
+    init();
+}
+
+void TagConvertor::init()
+{
     _encoding = new char[ENCODING_LEN];
     _utf8Title = new QString();
     _utf8Artist = new QString();
@@ -30,26 +41,52 @@ TagConvertor::TagConvertor(TagLib::FileRef *mp3File)
 
 TagConvertor::~TagConvertor()
 {
-    delete _encoding;
-    delete _utf8Title;
-    delete _utf8Artist;
-    delete _utf8Album;
-    delete _utf8Genre;
-    delete _utf8Comment;
+    if (_mp3File){
+        delete _mp3File;
+        _mp3File = nullptr;
+    }
+    if (_encoding) {
+        delete _encoding;
+        _encoding = nullptr;
+    }
+    if (_utf8Title) {
+        delete _utf8Title;
+        _utf8Title = nullptr;
+    }
+    if (_utf8Artist) {
+        delete _utf8Artist;
+        _utf8Artist = nullptr;
+    }
+    if (_utf8Album) {
+        delete _utf8Album;
+        _utf8Album = nullptr;
+    }
+    if (_utf8Genre) {
+        delete _utf8Genre;
+        _utf8Genre = nullptr;
+    }
+    if (_utf8Comment) {
+        delete _utf8Comment;
+        _utf8Comment = nullptr;
+    }
 }
 
-bool TagConvertor::isUtf8Tag(TagLib::String str)
+bool TagConvertor::is_utf8_tag(TagLib::String str)
 {
     return !str.isNull() && !str.isEmpty() && !str.isAscii() && !str.isLatin1();
 }
 
+bool TagConvertor::is_missing_mp3_file() const
+{
+    return _mp3File == NULL || _mp3File->isNull() || _mp3File->tag() == NULL;
+}
+
 void TagConvertor::load(const char *manualEncoding)
 {
-    if (mp3File == NULL || mp3File->isNull() || mp3File->tag() == NULL)
+    if (is_missing_mp3_file())
         return;
 
-    TagLib::Tag *tag = mp3File->tag();
-
+    const TagLib::Tag *tag = _mp3File->tag();
 //    std::cout << "title   - " << tag->title()   << "\n" <<
 //                 "artist  - " << tag->artist()  << "\n" <<
 //                 "album   - " << tag->album()   << "\n" <<
@@ -70,7 +107,7 @@ void TagConvertor::load(const char *manualEncoding)
             _album + _album +
             _genre + _comment;
 
-        const char *src = all.toCString(TagConvertor::isUtf8Tag(all));
+        const char *src = all.toCString(TagConvertor::is_utf8_tag(all));
 //        std::cout << "src: " << src << std::endl;
 
         uchardet_t ud = uchardet_new();
@@ -124,12 +161,12 @@ void TagConvertor::load(const char *manualEncoding)
 
 bool TagConvertor::convert()
 {
-    if (mp3File == NULL || mp3File->isNull() || mp3File->tag() == NULL){
+    if (is_missing_mp3_file()){
         std::cout << "nothing to save..." << std::endl;
         return false;
     }
 
-    TagLib::Tag *tag = mp3File->tag();
+    TagLib::Tag *tag = _mp3File->tag();
     tag->setTitle(TagLib::String(_utf8Title->toUtf8().data(), TagLib::String::UTF8));
     tag->setArtist(TagLib::String(_utf8Artist->toUtf8().data(), TagLib::String::UTF8));
     tag->setAlbum(TagLib::String(_utf8Album->toUtf8().data(), TagLib::String::UTF8));
@@ -140,12 +177,17 @@ bool TagConvertor::convert()
 
 bool TagConvertor::save() const
 {
-    if (mp3File->isNull()){
+    if (is_missing_mp3_file()){
         std::cout << "mp3 file is null" << std::endl;
         return false;
     }
 
-    return mp3File->save();
+    return _mp3File->save();
+}
+
+const TagLib::FileRef *TagConvertor::mp3File() const
+{
+    return _mp3File;
 }
 
 const char *TagConvertor::encoding() const
