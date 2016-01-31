@@ -18,6 +18,7 @@ A open-source MP3 ID3 Tag Encoding Converter and Editor is a software that can c
 #### Build Prerequisites:
 * [TagLib 1.9.1](http://taglib.github.io/)
 * [uchardet 0.0.5](https://github.com/BYVoid/uchardet)
+* [OpenCC 1.0.3](https://github.com/BYVoid/OpenCC)
 
 
 **開放 MP3 ID3 編碼轉換及編輯工具**
@@ -38,4 +39,4 @@ ID3 標籤多應用於MP3格式的音訊檔案中。它可以將相關的曲名�
 #### 依賴庫：
 * [TagLib 1.9.1](http://taglib.github.io/)
 * [uchardet 0.0.5](https://github.com/BYVoid/uchardet)
-
+* [OpenCC 1.0.3](https://github.com/BYVoid/OpenCC)
