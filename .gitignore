@@ -13,6 +13,8 @@ object_script.*
 .DS_Store
 .qmake.stash
 msvc/Win32/
+msvc/x64/
+msvc/.vs/
 msvc/*.suo
 msvc/*.vcxproj.user
 msvc/*.sdf
