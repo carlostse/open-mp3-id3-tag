@@ -1,4 +1,4 @@
-/* Copyright 2016 Carlos Tse <copperoxide@gmail.com>
+/* Copyright 2019 Carlos Tse <carlos@aboutmy.info>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -6,7 +6,7 @@ ID3 tag is a metadata container most often used in conjunction with the MP3 audi
 
 The text can be encoding in various encoding, however, modern MP3 players, such as iTunes and VLC can only read text encoding in UTF-8.
 
-A open-source MP3 ID3 Tag Encoding Converter and Editor is a software that can convert to text encoding to UTF-8. 
+A open-source MP3 ID3 Tag Encoding Converter and Editor is a software that can convert to text encoding to UTF-8.
 
 #### Features:
 1. MP3 ID3 Tag encoding conversion;
@@ -16,6 +16,7 @@ A open-source MP3 ID3 Tag Encoding Converter and Editor is a software that can c
 5. Source MP3 ID3 Tag encoding detection
 
 #### Build Prerequisites:
+* [Qt 5](https://www.qt.io)
 * [TagLib](https://github.com/taglib/taglib)
 * [uchardet](https://github.com/BYVoid/uchardet)
 * [OpenCC](https://github.com/BYVoid/OpenCC)

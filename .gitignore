@@ -5,7 +5,7 @@ lib/*.a
 Makefile*
 *.exe
 *.app/*
-*.pro.user
+*.pro.user*
 *.qm
 qrc_*.cpp
 moc_*.cpp

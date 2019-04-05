@@ -3,12 +3,11 @@
 # Open MP3 ID3 Tag
 #
 # Author: Carlos Tse
-# Email: copperoxide@gmail.com
+# Email: carlos@aboutmy.info
 # Date: 28 JAN 2016
 #-------------------------------------------------
 
-QT = core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT = core gui widgets
 TARGET = open_mp3_id3_tag
 TEMPLATE = app
 

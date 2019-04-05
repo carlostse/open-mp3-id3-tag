@@ -1,4 +1,4 @@
-/* Copyright 2016 Carlos Tse <copperoxide@gmail.com>
+/* Copyright 2019 Carlos Tse <carlos@aboutmy.info>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -446,7 +446,7 @@ void MainWindow::about()
 {
     QString t = tr("MP3 ID3 Tag Encoding Converter ");
     t.append(VERSION);
-    t.append("\n\nBy Carlos Tse <copperoxide@gmail.com>\n\n");
+    t.append("\n\nBy Carlos Tse <carlos@aboutmy.info>\n\n");
     t.append("Licensed under the Apache License, Version 2.0\n");
 
     QMessageBox msgBox;
