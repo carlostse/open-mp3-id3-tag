@@ -58,7 +58,7 @@ void EncodingConvertor::debugHex(const char *header, const char *content)
 
 QString EncodingConvertor::convert(const char *input) const
 {
-    if (input == NULL || strlen(input) == 0)
+    if (!input || strlen(input) < 1)
         return QString("");
 
     return QTextCodec::codecForName(_fromCharset)->toUnicode(input);

@@ -46,7 +46,7 @@ public:
     static bool is_utf8_tag(const TagLib::String);
     bool is_missing_mp3_file() const;
 
-    void load(const char *manualEncoding = NULL);
+    void load(const char *manualEncoding = nullptr);
     bool convert();
     bool save() const;
     const TagLib::FileRef *mp3File() const;

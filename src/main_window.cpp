@@ -24,7 +24,7 @@ namespace Mp3Id3EncCov
 {
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
-    tc = NULL;
+    tc = nullptr;
 
     // icon
     setWindowIcon(WIN_ICON);
@@ -73,7 +73,7 @@ void MainWindow::openFile()
 #else
             QDesktopServices::storageLocation(QDesktopServices::MusicLocation),
 #endif
-            "MP3 Files (*.mp3)", 0)
+            "MP3 Files (*.mp3)", nullptr)
     );
 }
 
@@ -148,7 +148,7 @@ void MainWindow::createMenu()
 
     // signal and slot
     QObject::connect(actOpen, SIGNAL(triggered()), this, SLOT(openFile()));
-    QObject::connect(actClose, SIGNAL(triggered()), this, SLOT(closeFile()));
+    QObject::connect(actClose, SIGNAL(triggered()), this, SLOT(clear()));
     QObject::connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
 //    QObject::connect(actHelp, SIGNAL(triggered()), this, SLOT(help()));
     QObject::connect(actAbout, SIGNAL(triggered()), this, SLOT(about()));
@@ -256,7 +256,7 @@ void MainWindow::initWidget()
 
     // signal and slot
     QObject::connect(btnSave, SIGNAL(clicked()), this, SLOT(convertMp3()));
-    QObject::connect(btnClose, SIGNAL(clicked()), this, SLOT(closeFile()));
+    QObject::connect(btnClose, SIGNAL(clicked()), this, SLOT(clear()));
     QObject::connect(cbEnc, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(reloadEncoding(const QString &)));
     QObject::connect(dropArea, SIGNAL(dropped(const QList<QUrl>)), this, SLOT(droppedFiles(const QList<QUrl>)));
 }
@@ -322,12 +322,12 @@ void MainWindow::updateInterface()
 
 void MainWindow::loadMp3(QString mp3FilePath)
 {
-    if (mp3FilePath.length() == 0){
+    if (mp3FilePath.length() < 1){
         statusBar()->clearMessage();
         return;
     }
 
-    closeFile();
+    clear();
 
 #ifdef Q_OS_WIN
     std::cout << "use wchar_t for file name" << std::endl;
@@ -350,7 +350,7 @@ void MainWindow::loadMp3(QString mp3FilePath)
 
 void MainWindow::setText()
 {
-    if (tc == NULL)
+    if (!tc)
         return;
 
     editTitle->setText(*tc->utf8Title());
@@ -366,7 +366,7 @@ void MainWindow::readMp3Info(const char *encoding)
     tc->load(encoding);
     setText();
 
-    if (encoding == NULL){
+    if (!encoding){
         std::cout << "disable combox signal" << std::endl;
         disableComboxSignal = true;
 
@@ -394,7 +394,7 @@ void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
 
 void MainWindow::convertMp3()
 {
-    if (tc == NULL || tc->is_missing_mp3_file())
+    if (!tc || tc->is_missing_mp3_file())
         return;
 
     tc->setUtf8Title(editTitle->text());
@@ -411,14 +411,14 @@ void MainWindow::convertMp3()
         readMp3Info();
 }
 
-void MainWindow::closeFile()
+void MainWindow::clear()
 {
     statusBar()->clearMessage();
-    editTitle->setText(NULL);
-    editArtist->setText(NULL);
-    editAlbum->setText(NULL);
-    editGenre->setText(NULL);
-    editComment->setPlainText(NULL);
+    editTitle->setText(nullptr);
+    editArtist->setText(nullptr);
+    editAlbum->setText(nullptr);
+    editGenre->setText(nullptr);
+    editComment->setPlainText(nullptr);
 
     if (tc){
         std::cout << "close mp3 file" << std::endl;

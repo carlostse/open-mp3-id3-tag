@@ -78,7 +78,7 @@ bool TagConvertor::is_utf8_tag(TagLib::String str)
 
 bool TagConvertor::is_missing_mp3_file() const
 {
-    return _mp3File == NULL || _mp3File->isNull() || _mp3File->tag() == NULL;
+    return !_mp3File || _mp3File->isNull() || !_mp3File->tag();
 }
 
 void TagConvertor::load(const char *manualEncoding)
@@ -99,7 +99,7 @@ void TagConvertor::load(const char *manualEncoding)
     _genre = tag->genre();
     _comment = tag->comment();
 
-    if (manualEncoding == NULL){
+    if (!manualEncoding){
         // guess encoding (increase simple size for accuracy)
         TagLib::String all =
             _title + _title + _title +
@@ -130,7 +130,7 @@ void TagConvertor::load(const char *manualEncoding)
     _utf8Comment->clear();
 
     // convert to UTF-8 for display in GUI and save
-    if (_encoding != NULL && strlen(_encoding) > 0 && strcmp(_encoding, "UTF-8") != 0){
+    if (_encoding && strlen(_encoding) > 0 && strcmp(_encoding, "UTF-8") != 0){
         std::cout << "converting " << _encoding << " to UTF8..." << std::endl;
         EncodingConvertor *conv = new EncodingConvertor(_encoding/*, "UTF-8"*/);
 

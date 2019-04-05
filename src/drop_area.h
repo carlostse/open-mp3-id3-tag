@@ -25,7 +25,7 @@ class DropArea : public QLabel
     Q_OBJECT
 
 public:
-    DropArea(const QSize &, QWidget *parent = 0);
+    DropArea(const QSize &, QWidget *parent = nullptr);
 
 signals:
     void dropped(const QList<QUrl> list);

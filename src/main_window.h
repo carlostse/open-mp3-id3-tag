@@ -82,18 +82,18 @@ private:
     void initWidget();
     void loadMp3(QString mp3FilePath);
     void setText();
-    void readMp3Info(const char *encoding = NULL);
+    void readMp3Info(const char *encoding = nullptr);
     static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
 public slots:
     void openFile();
     void droppedFiles(const QList<QUrl>);
     void convertMp3();
-    void closeFile();
+    void clear();
     void help();
     void about();
     void changeLangEn();
