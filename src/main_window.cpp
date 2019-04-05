@@ -287,8 +287,8 @@ void MainWindow::updateInterface()
     // menu
     menuFile->setTitle(tr("&File"));
     actOpen->setText(tr("Open"));
-    actSave->setText(tr("Convert and Save"));
-    actClose->setText(tr("Close"));
+    actSave->setText(tr("Convert"));
+    actClose->setText(tr("Clear"));
     actExit->setText(tr("E&xit"));
     actEn->setText(tr("&English"));
     actZht->setText(tr("&Traditional Chinese"));
@@ -302,8 +302,8 @@ void MainWindow::updateInterface()
     menuHelp->setTitle(tr("&Help"));
 
     // buttons
-    btnSave->setText(tr("Convert and Save"));
-    btnClose->setText(tr("Close"));
+    btnSave->setText(tr("Convert"));
+    btnClose->setText(tr("Clear"));
 
     // labels
     lbl1->setText(tr("Encoding: "));
@@ -405,12 +405,7 @@ void MainWindow::convertMp3()
 
     bool success = tc->convert() && tc->save();
     std::cout << "save success: " << success << "endl" << std::endl;
-    QMessageBox msgBox;
-    msgBox.setWindowIcon(WIN_ICON);
-    msgBox.setWindowTitle(tr("Save"));
-    msgBox.setInformativeText(success? tr("Saved"): tr("Save Failed"));
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.exec();
+    statusBar()->showMessage(success? tr("Saved"): tr("Save Failed"));
 
     if (success)
         readMp3Info();
