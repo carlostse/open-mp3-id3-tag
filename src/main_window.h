@@ -16,6 +16,7 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <QString>
 #include <QApplication>
 #include <QWidget>
 #include <QMainWindow>
@@ -46,7 +47,7 @@ class MainWindow : public QMainWindow
 
 private:
     bool disableComboxSignal;
-    TagConvertor *tc;
+    QString currentFile;
 
     QComboBox *cbEnc;
     QPushButton *btnSave, *btnClose;
@@ -71,7 +72,7 @@ private:
     void createMenu();
     void initWidget();
     void loadMp3(QString mp3FilePath);
-    void setText();
+    void setText(const TagConvertor *);
     void readMp3Info(const char *encoding = nullptr);
     static void setPlainTextHeight(QPlainTextEdit *edit, int nRows);
 

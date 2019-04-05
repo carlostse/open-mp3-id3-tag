@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <QString>
+#include <QFile>
 #include <uchardet.h>
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
@@ -39,8 +40,9 @@ private:
     void init();
 
 public:
-    TagConvertor(const wchar_t *file);
-    TagConvertor(const char *file);
+    TagConvertor(QString &);
+    TagConvertor(const wchar_t *);
+    TagConvertor(const char *);
     ~TagConvertor();
 
     static bool is_utf8_tag(const TagLib::String);

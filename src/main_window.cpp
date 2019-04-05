@@ -24,8 +24,6 @@ namespace Mp3Id3EncCov
 {
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
-    tc = nullptr;
-
     // icon
     setWindowIcon(WIN_ICON);
 
@@ -46,10 +44,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 
 MainWindow::~MainWindow()
 {
-    if (tc) {
-        delete tc;
-        tc = nullptr;
-    }
     if (trans) {
         delete trans;
         trans = nullptr;
@@ -329,26 +323,12 @@ void MainWindow::loadMp3(QString mp3FilePath)
 
     clear();
 
-#ifdef Q_OS_WIN
-    std::cout << "use wchar_t for file name" << std::endl;
-    wchar_t *data = new wchar_t[mp3FilePath.length() + sizeof(wchar_t)]();
-    mp3FilePath.toWCharArray(data);
-    std::wcout << L"load mp3: " << data << std::endl;
-#else
-    std::cout << "use char for file name" << std::endl;
-    QByteArray ba = QFile::encodeName(mp3FilePath);
-    char *data = new char[ba.length() + sizeof(char)]();
-    strcpy(data, ba.constData());
-    std::cout << "load mp3: " << data << std::endl;
-#endif
-
     statusBar()->showMessage(mp3FilePath);
-    tc = new TagConvertor(data);
+    currentFile = mp3FilePath;
     readMp3Info();
-    delete[] data;
 }
 
-void MainWindow::setText()
+void MainWindow::setText(const TagConvertor *tc)
 {
     if (!tc)
         return;
@@ -363,8 +343,10 @@ void MainWindow::setText()
 
 void MainWindow::readMp3Info(const char *encoding)
 {
+    auto tc = new TagConvertor(currentFile);
     tc->load(encoding);
-    setText();
+    setText(tc);
+    delete tc;
 
     if (!encoding){
         std::cout << "disable combox signal" << std::endl;
@@ -394,6 +376,7 @@ void MainWindow::setPlainTextHeight(QPlainTextEdit *edit, int nRows)
 
 void MainWindow::convertMp3()
 {
+    auto tc = new TagConvertor(currentFile);
     if (!tc || tc->is_missing_mp3_file())
         return;
 
@@ -406,9 +389,10 @@ void MainWindow::convertMp3()
     bool success = tc->convert() && tc->save();
     std::cout << "save success: " << success << "endl" << std::endl;
     statusBar()->showMessage(success? tr("Saved"): tr("Save Failed"));
+    delete tc;
 
     if (success)
-        readMp3Info();
+        readMp3Info("UTF-8");
 }
 
 void MainWindow::clear()
@@ -419,12 +403,6 @@ void MainWindow::clear()
     editAlbum->setText(nullptr);
     editGenre->setText(nullptr);
     editComment->setPlainText(nullptr);
-
-    if (tc){
-        std::cout << "close mp3 file" << std::endl;
-        delete tc;
-        tc = nullptr;
-    }
 }
 
 void MainWindow::help()

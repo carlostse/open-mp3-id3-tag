@@ -17,6 +17,25 @@
 
 namespace Mp3Id3EncCov
 {
+TagConvertor::TagConvertor(QString &file)
+{
+#ifdef Q_OS_WIN
+    std::cout << "use wchar_t for file name" << std::endl;
+    wchar_t *data = new wchar_t[file.length() + sizeof(wchar_t)]();
+    file.toWCharArray(data);
+    std::wcout << L"load mp3: " << data << std::endl;
+#else
+    std::cout << "use char for file name" << std::endl;
+    QByteArray ba = QFile::encodeName(file);
+    char *data = new char[ba.length() + sizeof(char)]();
+    strcpy(data, ba.constData());
+    std::cout << "load mp3: " << data << std::endl;
+#endif
+    _mp3File = new TagLib::FileRef(TagLib::FileName(data));
+    init();
+    delete[] data;
+}
+
 TagConvertor::TagConvertor(const wchar_t *file)
 {
     _mp3File = new TagLib::FileRef(TagLib::FileName(file));
