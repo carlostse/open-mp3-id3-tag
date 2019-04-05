@@ -40,16 +40,6 @@
 
 namespace Mp3Id3EncCov
 {
-#define NUM_OF_WIN_ROW 8
-#define NUM_OF_COMMENT_ROW 5
-#ifdef Q_OS_MAC
-#define MIN_SIZE 380, 400
-#else
-#define MIN_SIZE 380, 340
-#endif
-#define MAX_SIZE 580, 420
-#define LBL_WIDTH 70
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

@@ -22,6 +22,16 @@
 #ifdef __cplusplus
 namespace Mp3Id3EncCov
 {
+#define NUM_OF_WIN_ROW 8
+#define NUM_OF_COMMENT_ROW 5
+#ifdef Q_OS_MAC
+#define MIN_SIZE 420, 400
+#else
+#define MIN_SIZE 420, 340
+#endif
+#define MAX_SIZE 600, 420
+#define LBL_WIDTH 70
+
 enum Language {ENG, ZHT, ZHS};
 }
 #endif
