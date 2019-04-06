@@ -16,13 +16,13 @@
 #ifndef TAG_CONVERTOR_H
 #define TAG_CONVERTOR_H
 
-#include <iostream>
-#include <QString>
-#include <QFile>
+#include "encoding_convertor.h"
+#include "common.h"
 #include <uchardet.h>
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
-#include "encoding_convertor.h"
+#include <QString>
+#include <QFile>
 
 namespace Mp3Id3EncCov
 {

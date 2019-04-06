@@ -19,6 +19,7 @@
 #include <QStandardPaths>
 #endif
 #include "main_window.h"
+#include <iostream>
 
 namespace Mp3Id3EncCov
 {
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     QLocale *loc = new QLocale();
     language = loc->language() == QLocale::Chinese? loc->country() == QLocale::China? ZHS: ZHT: ENG;
     delete loc;
-    std::cout << "language: " << language << std::endl;
+    std::cout << "MainWindow - language: " << language << std::endl;
 
     // initial interface
     initWidget();
@@ -349,7 +350,7 @@ void MainWindow::readMp3Info(const char *encoding)
     delete tc;
 
     if (!encoding){
-        std::cout << "disable combox signal" << std::endl;
+        std::cout << "MainWindow - disable combox signal" << std::endl;
         disableComboxSignal = true;
 
         // default UTF-8
@@ -363,7 +364,7 @@ void MainWindow::readMp3Info(const char *encoding)
             }
         }
 
-        std::cout << "enable combox signal" << std::endl;
+        std::cout << "MainWindow - enable combox signal" << std::endl;
         disableComboxSignal = false;
     }
 }
@@ -387,7 +388,7 @@ void MainWindow::convertMp3()
     tc->setUtf8Comment(editComment->toPlainText());
 
     bool success = tc->convert() && tc->save();
-    std::cout << "save success: " << success << "endl" << std::endl;
+    std::cout << "MainWindow - save success: " << success << "endl" << std::endl;
     statusBar()->showMessage(success? tr("Saved"): tr("Save Failed"));
     delete tc;
 
@@ -417,7 +418,7 @@ void MainWindow::help()
 
 void MainWindow::about()
 {
-    QString t = tr("MP3 ID3 Tag Encoding Converter ");
+    QString t = tr("MP3 ID3 Tag Encoding Converter");
     t.append(VERSION);
     t.append("\n\nBy Carlos Tse <carlos@aboutmy.info>\n\n");
     t.append("Licensed under the Apache License, Version 2.0\n");
@@ -479,7 +480,7 @@ void MainWindow::reloadEncoding(const QString &text)
         return;
 
     std::string encoding = text.toStdString();
-//	std::cout << "reload encoding: " << encoding << std::endl;
+//	std::cout << "MainWindow - reload encoding: " << encoding << std::endl;
     readMp3Info(encoding.c_str());
 }
 }

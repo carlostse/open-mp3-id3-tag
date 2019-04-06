@@ -14,6 +14,7 @@
  */
 
 #include "chinese_convertor.h"
+#include <iostream>
 
 namespace Mp3Id3EncCov
 {
@@ -33,6 +34,7 @@ ChineseConvertor::~ChineseConvertor()
 QString ChineseConvertor::convert(QString src) const
 {
     if (!opencc || opencc == (opencc_t)-1){
+        std::cerr << "ChineseConvertor - opencc is null" << std::endl;
         return src;
     }
 
@@ -42,6 +44,7 @@ QString ChineseConvertor::convert(QString src) const
     char *buffOut = opencc_convert_utf8(opencc, utf8BuffIn, -1);
 
     if (buffOut == (char *) -1){
+        std::cerr << "ChineseConvertor - opencc_convert_utf8 failed" << std::endl;
         opencc_convert_utf8_free(buffOut);
         return src;
     }
