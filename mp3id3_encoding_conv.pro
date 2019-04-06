@@ -41,7 +41,7 @@ SOURCES += \
     src/tag_convertor.cpp \
     src/main_window.cpp \
     src/chinese_convertor.cpp \
-    src/common.c \
+    src/common.cpp \
     src/main.cpp
 
 FORMS +=

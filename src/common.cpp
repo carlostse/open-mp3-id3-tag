@@ -14,3 +14,21 @@
  */
 
 #include "common.h"
+#include <QByteArray>
+#include <QFile>
+
+namespace Mp3Id3EncCov
+{
+wchar_t *Util::qfileToWChar(QString &file){
+    wchar_t *data = new wchar_t[file.length() + sizeof(wchar_t)]();
+    file.toWCharArray(data);
+    return data;
+}
+
+char *Util::qfileToChar(QString &file){
+    QByteArray ba = QFile::encodeName(file);
+    char *data = new char[ba.length() + sizeof(char)]();
+    strcpy(data, ba.constData());
+    return data;
+}
+}

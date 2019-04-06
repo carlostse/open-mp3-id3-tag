@@ -29,12 +29,12 @@ otool -L $BUILD/$APP_NAME.app/Contents/MacOS/open_mp3_id3_tag
 
 if [ "$2" == "package" ]; then
   # note -dmg will create a read-only image
-  hdiutil create -size 100MB -fs HFS+ -volname "Open MP3 ID3 TAG" ./tmp.dmg
-  hdiutil attach ./tmp.dmg
+  hdiutil create -size 100MB -fs HFS+ -volname "Open MP3 ID3 TAG" $BUILD/tmp.dmg
+  hdiutil attach $BUILD/tmp.dmg
   cp -R $BUILD/$APP_NAME.app /Volumes/Open\ MP3\ ID3\ Tag/Open\ MP3\ ID3\ Tag.app
   ln -s /Applications /Volumes/Open\ MP3\ ID3\ Tag/
   diskutil eject /Volumes/Open\ MP3\ ID3\ Tag/
-  hdiutil convert -format UDBZ -o ./$APP_NAME.dmg ./tmp.dmg
+  hdiutil convert -format UDBZ -o $BUILD/$APP_NAME.dmg $BUILD/tmp.dmg
   rm ./tmp.dmg
 fi
 

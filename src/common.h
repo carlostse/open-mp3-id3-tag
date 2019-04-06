@@ -16,6 +16,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <cwchar>
+#include <QString>
+
 #define VERSION "0.5.0"
 #define WIN_ICON QIcon(":/icon")
 
@@ -33,6 +36,13 @@ namespace Mp3Id3EncCov
 #define LBL_WIDTH 70
 
 enum Language {ENG, ZHT, ZHS};
+
+class Util
+{
+public:
+    static wchar_t *qfileToWChar(QString &);
+    static char *qfileToChar(QString &);
+};
 }
 #endif
 
