@@ -14,7 +14,7 @@
     <ProjectGuid>{05576772-6DE9-353C-B7B9-4D1310F0E4B9}</ProjectGuid>
     <RootNamespace>open_mp3_id3_tag</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\taglib-1.9.1;..\..\taglib-1.9.1\$(Configuration);..\..\taglib-1.9.1\taglib;..\..\taglib-1.9.1\taglib\toolkit;..\..\uchardet\src;..\..\OpenCC\src;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;$(QTDIR)\mkspecs\win32-msvc2013;debug\.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\taglib;..\..\taglib\$(Configuration);..\..\taglib\taglib;..\..\taglib\taglib\toolkit;..\..\uchardet\src;..\..\OpenCC\src;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;$(QTDIR)\mkspecs\win32-msvc2013;debug\.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>debug\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -74,7 +74,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>tag.lib;uchardet.lib;opencc.lib;qtmaind.lib;Qt5Widgetsd.lib;Qt5Guid.lib;Qt5Cored.lib;libEGLd.lib;libGLESv2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\taglib-1.9.1\$(Configuration)\taglib;..\..\uchardet\$(Configuration)\src;..\..\OpenCC\$(Configuration)\src;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\taglib\taglib\$(Configuration);..\..\uchardet\src\$(Configuration);..\..\OpenCC\$(Configuration)\src;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <SubSystem>Windows</SubSystem>
@@ -100,7 +100,7 @@ $(QTDIR)\bin\windeployqt.exe --debug $(OutDir)$(TargetName)$(TargetExt)</Command
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\taglib-1.9.1;..\..\taglib-1.9.1\$(Configuration);..\..\taglib-1.9.1\taglib;..\..\taglib-1.9.1\taglib\toolkit;..\..\uchardet\src;..\..\OpenCC\src;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;$(QTDIR)\mkspecs\win32-msvc2013;release\.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\taglib;..\..\taglib\$(Configuration);..\..\taglib\taglib;..\..\taglib\taglib\toolkit;..\..\uchardet\src;..\..\OpenCC\src;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;$(QTDIR)\mkspecs\win32-msvc2013;release\.moc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>release\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -115,7 +115,7 @@ $(QTDIR)\bin\windeployqt.exe --debug $(OutDir)$(TargetName)$(TargetExt)</Command
     </ClCompile>
     <Link>
       <AdditionalDependencies>tag.lib;uchardet.lib;opencc.lib;qtmain.lib;Qt5Widgets.lib;Qt5Gui.lib;Qt5Core.lib;libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\taglib-1.9.1\$(Configuration)\taglib;..\..\uchardet\$(Configuration)\src;..\..\OpenCC\$(Configuration)\src;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\taglib\taglib\$(Configuration);..\..\uchardet\src\$(Configuration);..\..\OpenCC\$(Configuration)\src;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkIncremental>false</LinkIncremental>
@@ -142,7 +142,7 @@ $(QTDIR)\bin\windeployqt.exe --release $(OutDir)$(TargetName)$(TargetExt)</Comma
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\chinese_convertor.cpp" />
-    <ClCompile Include="..\src\common.c" />
+    <ClCompile Include="..\src\common.cpp" />
     <ClCompile Include="..\src\drop_area.cpp" />
     <ClCompile Include="..\src\encoding_convertor.cpp" />
     <ClCompile Include="..\src\main.cpp" />
@@ -198,22 +198,22 @@ $(QTDIR)\bin\windeployqt.exe --release $(OutDir)$(TargetName)$(TargetExt)</Comma
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing drop_area.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_UNICODE "-I." "-I.\..\..\uchardet\src" "-I.\..\..\taglib-1.9.1" "-I.\..\..\taglib-1.9.1\taglib" "-I.\..\..\taglib-1.9.1\taglib\toolkit" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\debug\.moc"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D%(PreprocessorDefinitions)  "-I.\..\..\taglib" "-I.\..\..\taglib\$(Configuration)" "-I.\..\..\taglib\taglib" "-I.\..\..\taglib\taglib\toolkit" "-I.\..\..\uchardet\src" "-I.\..\..\OpenCC\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\debug\.moc"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing drop_area.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_NO_DEBUG -DNDEBUG -D_UNICODE "-I." "-I.\..\..\uchardet\src" "-I.\..\..\taglib-1.9.1" "-I.\..\..\taglib-1.9.1\taglib" "-I.\..\..\taglib-1.9.1\taglib\toolkit" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\release\.moc"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_NO_DEBUG -DNDEBUG -D%(PreprocessorDefinitions)  "-I.\..\..\taglib" "-I.\..\..\taglib\$(Configuration)" "-I.\..\..\taglib\taglib" "-I.\..\..\taglib\taglib\toolkit" "-I.\..\..\uchardet\src" "-I.\..\..\OpenCC\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\release\.moc"</Command>
     </CustomBuild>
     <ClInclude Include="..\src\encoding_convertor.h" />
     <CustomBuild Include="..\src\main_window.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing main_window.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_UNICODE "-I." "-I.\..\..\uchardet\src" "-I.\..\..\taglib-1.9.1" "-I.\..\..\taglib-1.9.1\taglib" "-I.\..\..\taglib-1.9.1\taglib\toolkit" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\debug\.moc"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D%(PreprocessorDefinitions)  "-I.\..\..\taglib" "-I.\..\..\taglib\$(Configuration)" "-I.\..\..\taglib\taglib" "-I.\..\..\taglib\taglib\toolkit" "-I.\..\..\uchardet\src" "-I.\..\..\OpenCC\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\debug\.moc"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing main_window.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_NO_DEBUG -DNDEBUG -D_UNICODE "-I." "-I.\..\..\uchardet\src" "-I.\..\..\taglib-1.9.1" "-I.\..\..\taglib-1.9.1\taglib" "-I.\..\..\taglib-1.9.1\taglib\toolkit" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\release\.moc"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_NO_DEBUG -DNDEBUG -D%(PreprocessorDefinitions)  "-I.\..\..\taglib" "-I.\..\..\taglib\$(Configuration)" "-I.\..\..\taglib\taglib" "-I.\..\..\taglib\taglib\toolkit" "-I.\..\..\uchardet\src" "-I.\..\..\OpenCC\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\release\.moc"</Command>
     </CustomBuild>
     <ClInclude Include="..\src\tag_convertor.h" />
   </ItemGroup>
